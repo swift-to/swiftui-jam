@@ -2,6 +2,11 @@
 import XCTVapor
 
 final class AppTests: XCTestCase {
+
+    static var allTests = [
+        ("testHelloWorld", testHelloWorld)
+    ]
+
     func testHelloWorld() throws {
         let app = Application(.testing)
         defer { app.shutdown() }
