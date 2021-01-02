@@ -3,6 +3,7 @@ import Vapor
 //import JWT
 import FluentPostgresDriver
 import APIRouting
+import Regex
 
 struct RegisterRequestBody: Decodable {
     var email: String
@@ -21,10 +22,7 @@ struct RegisterEndpoint: APIRoutingEndpoint {
         body: RegisterRequestBody
     ) throws -> EventLoopFuture<HTTPStatus> {
         
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        
-        if !emailPred.evaluate(with: body.email) {
+        if "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}".r?.matches(body.email) == false {
             throw Abort(.badRequest, reason: "Invalid Email")
         }
         
