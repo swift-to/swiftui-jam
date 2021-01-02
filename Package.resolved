@@ -21,7 +21,7 @@
       },
       {
         "package": "chill",
-        "repositoryURL": "git@github.com:pyrus-io/chill.git",
+        "repositoryURL": "https://github.com/pyrus-io/chill.git",
         "state": {
           "branch": null,
           "revision": "2de3821ec999916be26846d6d0cec6b155cf8cc4",
