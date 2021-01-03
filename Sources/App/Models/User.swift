@@ -1,13 +1,6 @@
 import Fluent
 import Vapor
 
-enum UserType: String, Codable {
-    case soloProgrammer
-    case teamProgrammer
-    case teamDesigner
-    case floatingDesigner
-}
-
 final class User: Model {
     static let schema = "users"
     
@@ -22,4 +15,11 @@ final class User: Model {
     
     @OptionalField(key: "bio")
     var bio: String?
+    
+    @Field(key: "isFloater")
+    var isFloater: Bool
+    
+    init() {
+        isFloater = false
+    }
 }

@@ -10,7 +10,12 @@ func routes(_ app: Application) throws {
     
     app.group("api") {
         StatusEndpoint.register(in: $0)
-        RegisterEndpoint.register(in: $0)
+        
+        RegisterTeamMemberEndpoint.register(in: $0)
+        RegisterCaptainEndpoint.register(in: $0)
+        RegisterFloaterEndpoint.register(in: $0)
+        
+        GetTeamsEndpoint.register(in: $0)
     }
     
     app.get("docs", "json") { (request) -> JSONString in

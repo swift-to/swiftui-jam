@@ -33,6 +33,7 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateUserTeamTableMigration())
     
     #if DEBUG
+//    try app.autoRevert().wait()
     try app.autoMigrate().wait()
     #endif
     

@@ -10,6 +10,14 @@ public struct CreateTeamTableMigration: Migration {
             .schema("teams")
             .id()
             .field("name", .string, .required)
+            .field(
+                "captainId",
+                .uuid,
+                .foreignKey("users", .key("id"),
+                            onDelete: .noAction,
+                            onUpdate: .noAction)
+            )
+            .field("requiresFloater", .bool, .required)
             .unique(on: "name")
             .create()
     }

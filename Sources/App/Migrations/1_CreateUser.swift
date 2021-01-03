@@ -12,6 +12,7 @@ public struct CreateUserTableMigration: Migration {
             .field("name", .string, .required)
             .field("email", .string, .required)
             .field("bio", .string)
+            .field("isFloater", .bool, .required)
             .unique(on: "email")
             .create()
     }
