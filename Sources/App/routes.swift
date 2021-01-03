@@ -5,7 +5,7 @@ import APIRouting
 
 func routes(_ app: Application) throws {
     app.get { req in
-        req.fileio.streamFile(at: "Public/index.html")
+        req.fileio.streamFile(at: "Web/dist/index.html")
     }
     
     app.group("api") {

@@ -5,6 +5,8 @@ import Vapor
 // configures your application
 public func configure(_ app: Application) throws {
     
+    app.directory.publicDirectory = "Web/dist"
+    
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
     if app.environment == .production {
