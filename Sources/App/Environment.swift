@@ -5,6 +5,8 @@ enum EnvironmentKey: String {
     case dbUser = "DATABASE_USERNAME"
     case dbPassword = "DATABASE_PASSWORD"
     case dbName = "DATABASE_NAME"
+    
+    case dbUrl = "DATABASE_URL"
 }
 
 extension Environment {
