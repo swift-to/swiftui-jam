@@ -4,10 +4,7 @@ import SwaggerDocumentationGenerator
 import APIRouting
 
 func routes(_ app: Application) throws {
-    app.get { req in
-        req.fileio.streamFile(at: "Web/dist/index.html")
-    }
-    
+
     app.group("api") {
         StatusEndpoint.register(in: $0)
         

@@ -101,7 +101,7 @@ export default {
           alert(xhr.responseText)
         }
       }
-      xhr.open('GET', '/api/teams')
+      xhr.open('GET', process.env.VUE_APP_BASE_API_URL + '/api/teams')
       xhr.send()
     },
     register: function () {
@@ -137,7 +137,7 @@ export default {
         self.isProcessing = false
       }
 
-      xhr.open('POST', `/api/${path}`)
+      xhr.open('POST', `${process.env.VUE_APP_BASE_API_URL}/api/${path}`)
       xhr.setRequestHeader("Content-Type", "application/json")
       xhr.send(JSON.stringify(this.formData))
     }

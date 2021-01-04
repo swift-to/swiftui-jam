@@ -2,9 +2,11 @@
     <div id="main-container">
       
       <div v-if="currentView == 'home'">
-          <a class="nav-item" @click="goToRegister()" >
-            <h3>Register</h3>
+        <nav>
+          <a class="nav-item register" @click="goToRegister()" >
+            <span>📝 Register</span>
           </a>
+        </nav>
       </div>
       <header v-if="currentView != 'home'" >
         <a href="/">
@@ -58,10 +60,29 @@ export default {
   color: #2c3e50;
 }
 
+nav {
+  float: right;
+}
+
 .nav-item {
   text-decoration: underline;
 }
 .nav-item:hover {
   color:coral;
+}
+
+.nav-item.register {
+  display: inline-block;
+  text-decoration: none;
+  background-color: #008AC8;
+  color: white;
+  border-radius: 4pt;
+  padding: 4pt 8pt;
+  cursor: pointer;
+  font-size: 14pt;
+  font-weight: bold;
+}
+.nav-item.register:hover {
+  background-color: coral;
 }
 </style>
