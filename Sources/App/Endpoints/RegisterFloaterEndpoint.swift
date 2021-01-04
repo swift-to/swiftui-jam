@@ -29,6 +29,7 @@ struct RegisterFloaterEndpoint: APIRoutingEndpoint {
         let newUser = User()
         newUser.name = body.name
         newUser.email = body.email
+        newUser.isFloater = true
         return newUser.create(on: context.db)
             .map { _ in .ok }
     }

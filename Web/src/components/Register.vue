@@ -68,10 +68,26 @@ export default {
   },
   computed: {
     isValid: function() {
-      return this.formData.name != null 
-        && this.formData.name.length > 0
-        && this.formData.email != null
-        && this.formData.email.length !=0
+      if(
+        this.formData.name == null 
+        || this.formData.name.length == 0
+        || this.formData.email == null
+        || this.formData.email.length == 0
+        ) {
+          return false
+        }
+
+        if (this.registerAs == "team-captain" && (
+            this.formData.newTeamName == null 
+            || this.formData.newTeamName.length == 0
+          )) {
+            return false
+        }
+        else if (this.registerAs == "team-member" && this.formData.existingTeamId == null) {
+            return false
+        }
+
+        return true
     }
   },
   methods: {
