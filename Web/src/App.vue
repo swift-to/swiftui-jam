@@ -6,6 +6,12 @@
             <h3>Register</h3>
           </a>
       </div>
+      <header v-if="currentView != 'home'" >
+        <a href="/">
+          <img class="logo" src="/img/SwiftUI-Jam-Logo-Small@2x.png" width="128" height="128" />
+          <h1>SwiftUI Jam</h1>
+        </a>
+      </header>
       
       <div v-if="currentView == 'register'">
           <Register @registrationComplete="goToRegisterConfirmation" />

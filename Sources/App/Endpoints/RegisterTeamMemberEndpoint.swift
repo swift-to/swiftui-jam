@@ -33,17 +33,23 @@ struct RegisterTeamMemberEndpoint: APIRoutingEndpoint {
             .first()
             .unwrap(or: Abort(.notFound, reason: "Team not found"))
             .flatMap { team -> EventLoopFuture<Void> in
-                guard team.members.count < 3 else {
-                    return context.eventLoop.makeFailedFuture(Abort(.badRequest, reason: "Team already has maximum number of members"))
-                }
-
-                let newUser = User()
-                newUser.name = body.name
-                newUser.email = body.email
-                return newUser.create(on: context.db)
-                    .flatMap { _ in
+                do {
+                    guard team.members.count < 3 else {
+                        throw Abort(.badRequest, reason: "Team already has maximum number of members")
+                    }
+                    return try User.create(
+                        name: body.name,
+                        email: body.email,
+                        isFloater: false,
+                        on: context.db
+                    )
+                    .flatMap { newUser in
                         team.$members.attach(newUser, on: context.db)
                     }
+                }
+                catch {
+                    return context.eventLoop.makeFailedFuture(error)
+                }
             }
             .map { _ in .ok }
     }

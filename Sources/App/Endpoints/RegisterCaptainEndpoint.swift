@@ -24,23 +24,22 @@ struct RegisterCaptainEndpoint: APIRoutingEndpoint {
         body: RegisterCaptainRequestBody
     ) throws -> EventLoopFuture<HTTPStatus> {
         
-        if "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}".r?.matches(body.email) == false {
-            throw Abort(.badRequest, reason: "Invalid Email")
-        }
-        
         return Team.query(on: context.db)
             .filter(\.$name == body.name)
             .first()
-            .flatMapThrowing { (team) -> EventLoopFuture<Void> in
-                guard team == nil else {
-                    throw Abort(.badRequest, reason: "Team already exists")
-                }
-                
-                let newUser = User()
-                newUser.name = body.name
-                newUser.email = body.email
-                return newUser.create(on: context.db)
-                    .flatMap { _ -> EventLoopFuture<Void> in
+            .flatMap { (team) -> EventLoopFuture<Void> in
+                do {
+                    guard team == nil else {
+                        throw Abort(.badRequest, reason: "Team already exists")
+                    }
+                    
+                    return try User.create(
+                        name: body.name,
+                        email: body.email,
+                        isFloater: false,
+                        on: context.db
+                    )
+                    .flatMap { newUser -> EventLoopFuture<Void> in
                         do {
                             // new team
                             let newTeam = Team()
@@ -52,6 +51,9 @@ struct RegisterCaptainEndpoint: APIRoutingEndpoint {
                             return context.eventLoop.makeFailedFuture(error)
                         }
                     }
+                } catch {
+                    return context.eventLoop.makeFailedFuture(error)
+                }
             }
             .map { _ in .ok }
     }

@@ -3,7 +3,6 @@ import Vapor
 //import JWT
 import FluentPostgresDriver
 import APIRouting
-import Regex
 
 struct RegisterFloaterRequestBody: Decodable {
     var email: String
@@ -22,15 +21,12 @@ struct RegisterFloaterEndpoint: APIRoutingEndpoint {
         body: RegisterFloaterRequestBody
     ) throws -> EventLoopFuture<HTTPStatus> {
         
-        if "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}".r?.matches(body.email) == false {
-            throw Abort(.badRequest, reason: "Invalid Email")
-        }
-        
-        let newUser = User()
-        newUser.name = body.name
-        newUser.email = body.email
-        newUser.isFloater = true
-        return newUser.create(on: context.db)
-            .map { _ in .ok }
+        return try User.create(
+            name: body.name,
+            email: body.email,
+            isFloater: true,
+            on: context.db
+        )
+        .map { _ in .ok }
     }
 }

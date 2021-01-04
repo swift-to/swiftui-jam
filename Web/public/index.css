@@ -1,3 +1,15 @@
+
+header .logo {
+  display: block;
+  float: left;
+}
+header {
+  clear: both;
+  overflow: hidden;
+}
+
+/* From Macdown */
+
 body {
   font-family: Helvetica, arial, sans-serif;
   font-size: 14px;
