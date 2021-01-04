@@ -34,8 +34,8 @@ public func configure(_ app: Application) throws {
     
     #if DEBUG
 //    try app.autoRevert().wait()
-    try app.autoMigrate().wait()
     #endif
+    try app.autoMigrate().wait()
     
     try routes(app)
 }
