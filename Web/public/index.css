@@ -8,6 +8,27 @@ header {
   overflow: hidden;
 }
 
+div#intro {
+  font-size: 15pt;
+  line-height: 170%;
+}
+
+div#intro h2 {
+  margin-top: 45pt;
+}
+
+ol.faq {
+  list-style-type: none;
+}
+
+ol.faq li p {
+  font-weight: bold;
+}
+
+ol.faq blockquote p {
+  font-weight: normal;
+}
+
 /* From Macdown */
 
 body {
