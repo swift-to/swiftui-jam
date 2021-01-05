@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="icon" href="/favicon.ico">
     <link href="/index.css" rel="stylesheet">
-    <title>SwiftUI Jam</title>
+    <title><%= title %></title>
   </head>
   <body>
   
@@ -17,7 +17,7 @@
         <header>
           <img class="logo" src="/img/SwiftUI-Jam-Logo@2x.png" width="256" height="256" />
           <div class="info">
-            <h1>SwiftUI Jam</h1>
+            <h1><%= title %></h1>
             <h3>A weekend code jam to stretch your skills</h3>
             <h3>Friday Feb 19th 10am - Sunday Feb 21st 6pm (ET)</h3>
             <h3>FREE for all to participate</h3>
@@ -192,7 +192,7 @@
 
     <footer>
       <hr/>
-      <span class="about-organizers">SwiftUI Jam is brought to you by the organizers of SwiftTO. If you have any questions or issues registering, contact us at <a href="mailto:hello@swiftconf.to">hello@swiftconf.to</a></span>
+    <span class="about-organizers">SwiftUI Jam is brought to you by the organizers of SwiftTO. If you have any questions or issues registering, contact us on Twitter <a href="https://www.twitter.com/<%= twitter %>">@<%= twitter %></a> or email at <a href="mailto:hello@swiftconf.to">hello@swiftconf.to</a></span>
     </footer>
   </body>
 </html>
