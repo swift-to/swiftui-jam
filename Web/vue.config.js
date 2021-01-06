@@ -4,7 +4,7 @@ let data = {
   title: "SwiftUI Jam",
   description: "A weekend code jam to stretch your skills",
   twitter: "SwiftUIJam",
-  metaIcon: "/img/SwiftUI-Jam-Logo-Small@2x.png"
+  metaIcon: "https://www.swiftuijam.com/img/SwiftUI-Jam-Logo-Small@2x.png"
 }
 
 module.exports = {
