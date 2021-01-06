@@ -47,6 +47,9 @@ struct RegisterCaptainEndpoint: APIRoutingEndpoint {
                             newTeam.requiresFloater = body.requiresFloater
                             newTeam.$captain.id = try newUser.requireID()
                             return newTeam.create(on: context.db)
+                                .flatMap { _ in
+                                    newTeam.$members.attach(newUser, on: context.db)
+                                }
                         } catch {
                             return context.eventLoop.makeFailedFuture(error)
                         }

@@ -34,7 +34,7 @@ struct RegisterTeamMemberEndpoint: APIRoutingEndpoint {
             .unwrap(or: Abort(.notFound, reason: "Team not found"))
             .flatMap { team -> EventLoopFuture<Void> in
                 do {
-                    guard team.members.count < 3 else {
+                    guard team.members.count <= 5 else {
                         throw Abort(.badRequest, reason: "Team already has maximum number of members")
                     }
                     return try User.create(
