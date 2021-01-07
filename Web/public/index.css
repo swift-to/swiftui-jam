@@ -122,6 +122,10 @@ ol.schedule {
   list-style-type: circle;
 }
 
+ol.schedule li {
+  margin-bottom: 10px;
+}
+
 ol.schedule h5, ol.schedule p {
   margin: 0;
 }
