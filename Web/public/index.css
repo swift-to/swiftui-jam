@@ -118,6 +118,14 @@ ol.faq blockquote p {
   margin: 0;
 }
 
+ol.schedule {
+  list-style-type: circle;
+}
+
+ol.schedule h5, ol.schedule p {
+  margin: 0;
+}
+
 /* From Macdown */
 
 body {
