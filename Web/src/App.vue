@@ -1,12 +1,6 @@
 <template>
     <div id="main-container">
-      
       <div v-if="currentView == 'home'">
-        <nav>
-          <a class="nav-item register" @click="goToRegister()" >
-            <span>📝 Register</span>
-          </a>
-        </nav>
       </div>
       <header v-if="currentView != 'home'" >
         <a href="/">
@@ -37,16 +31,34 @@ export default {
   },
   data: () => {
     return {
-        currentView: 'home'
+        currentView: 'home',
+        validRoutes: ['register', 'confirmation']
     }
   },
+  created: function() {
+    this.evaluteHash(false)
+    window.addEventListener("hashchange", () => {
+      this.evaluteHash(true)
+    })
+  },
   methods: {
+    evaluteHash: function(shouldReloadIfNotFound) {
+      let route = window.location.hash.replace("#", "")
+      if (this.validRoutes.indexOf(route) !== -1) {
+        this.navigateTo(route)
+      } else if (route == "" && shouldReloadIfNotFound) {
+          window.location.reload()
+      }
+    },
     goToRegister: function() {
-        this.currentView = 'register'
-        document.getElementById("intro").remove()
+      window.location.hash = "#register"
     },
     goToRegisterConfirmation: function() {
-        this.currentView = 'confirmation'
+      window.location.hash = "#confirmation"
+    },
+    navigateTo: function(viewName) {
+      this.currentView = viewName
+      document.getElementById("intro").remove()
     }
   }
 }
@@ -60,29 +72,4 @@ export default {
   color: #2c3e50;
 }
 
-nav {
-  float: right;
-}
-
-.nav-item {
-  text-decoration: underline;
-}
-.nav-item:hover {
-  color:coral;
-}
-
-.nav-item.register {
-  display: inline-block;
-  text-decoration: none;
-  background-color: #008AC8;
-  color: white;
-  border-radius: 4pt;
-  padding: 4pt 8pt;
-  cursor: pointer;
-  font-size: 14pt;
-  font-weight: bold;
-}
-.nav-item.register:hover {
-  background-color: coral;
-}
 </style>

@@ -1,6 +1,18 @@
+
+@keyframes wiggle {
+  0% {transform: rotate(5deg);}
+  25% {transform: rotate(-5deg);}
+  50% {transform: rotate(10deg);}
+  75% {transform: rotate(-2deg);}
+  100% {transform: rotate(0deg);}
+}
+
 header .logo {
+  position: relative;
   display: block;
   float: left;
+  animation: 1s ease-in-out 2s 1 wiggle;
+  z-index: -1;
 }
 
 header {
@@ -17,9 +29,54 @@ a:hover {
   color: coral;
 }
 
+.nav-item {
+  text-decoration: underline;
+}
+.nav-item:hover {
+  color:coral;
+}
+
+.nav-item.register {
+  display: inline-block;
+  text-decoration: none;
+  background-color: #008AC8;
+  color: white;
+  border-radius: 4pt;
+  padding: 4pt 8pt;
+  cursor: pointer;
+  font-size: 14pt;
+  font-weight: bold;
+}
+.nav-item.register:hover {
+  background-color: coral;
+}
+
 div#intro {
+  position: relative;
   font-size: 15pt;
   line-height: 170%;
+}
+
+nav#intro-nav {
+  position: absolute;
+  left: -250px;
+}
+
+nav#intro-nav ol {
+  background: white;
+  position: fixed;
+  padding: 10px;
+  list-style-type: none;
+  border-radius: 8px;
+  border: #008AC8 3px solid;
+}
+
+nav#intro-nav li {
+  cursor: pointer;
+}
+
+nav#intro-nav li:hover {
+  color: gray;
 }
 
 div#intro h2 {
@@ -147,5 +204,28 @@ img {
     max-width: 50%;
     text-align: center;
     margin-bottom: 10px;
+  }
+
+}
+
+@media screen and (max-width: 1350px) {
+  nav#intro-nav {
+    position: relative;
+    left: auto;
+    right: 0;
+    z-index: 1;
+    /* float: right; */
+  }
+  
+  nav#intro-nav ol {
+    position: relative;
+    padding: 10px;
+    list-style-type: none;
+    border-radius: 8px;
+    border: #008AC8 3px solid;
+  }
+  
+  nav#intro-nav li {
+    cursor: pointer;
   }
 }
