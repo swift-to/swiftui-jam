@@ -20,7 +20,11 @@
           <label for="newTeamName">New Team Name</label>
           <input type="text" name="newTeamName" id="newTeamName" v-model="formData.newTeamName">
           <label for="requiresFloater">Requesting Floating Designer?</label>
-          <input type="checkbox" name="requiresFloater" id="requiresFloater" v-model="formData.requiresFloater">
+          <!-- <input type="checkbox" name="requiresFloater" id="requiresFloater" v-model="formData.requiresFloater"> -->
+          <select name="requiresFloater" id="requiresFloater" v-model="formData.requiresFloater">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
       </div>
 
       <div v-if="registerAs == 'team-member'">
