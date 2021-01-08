@@ -22,8 +22,8 @@
           <label for="requiresFloater">Requesting Floating Designer?</label>
           <!-- <input type="checkbox" name="requiresFloater" id="requiresFloater" v-model="formData.requiresFloater"> -->
           <select name="requiresFloater" id="requiresFloater" v-model="formData.requiresFloater">
-            <option value="true">Yes</option>
-            <option value="false">No</option>
+            <option v-bind:value="true">Yes</option>
+            <option v-bind:value="false">No</option>
           </select>
       </div>
 
