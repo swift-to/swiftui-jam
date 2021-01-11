@@ -19,6 +19,9 @@ final class User: Model {
     @Field(key: "isFloater")
     var isFloater: Bool
     
+    @Timestamp(key: "createdAt", on: .create)
+    var createdAt: Date?
+    
     init() {
         isFloater = false
     }

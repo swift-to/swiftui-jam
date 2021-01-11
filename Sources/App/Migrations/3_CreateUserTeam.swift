@@ -23,7 +23,7 @@ public struct CreateUserTeamTableMigration: Migration {
                             onDelete: .noAction,
                             onUpdate: .noAction)
             )
-
+            .field("createdAt", .datetime)
             .unique(on: "teamId", "userId")
             .create()
     }

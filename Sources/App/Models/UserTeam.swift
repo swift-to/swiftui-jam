@@ -12,6 +12,9 @@ final class UserTeam: Model {
 
     @Parent(key: "teamId")
     var team: Team
+    
+    @Timestamp(key: "createdAt", on: .create)
+    var createdAt: Date?
 
     init() { }
 

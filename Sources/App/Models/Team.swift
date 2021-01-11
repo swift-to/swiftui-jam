@@ -18,6 +18,9 @@ final class Team: Model {
     
     @Field(key: "requiresFloater")
     var requiresFloater: Bool
+    
+    @Timestamp(key: "createdAt", on: .create)
+    var createdAt: Date?
 }
 
 struct TeamViewModel: Codable, Content {

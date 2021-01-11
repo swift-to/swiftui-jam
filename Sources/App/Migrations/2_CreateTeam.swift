@@ -18,6 +18,7 @@ public struct CreateTeamTableMigration: Migration {
                             onUpdate: .noAction)
             )
             .field("requiresFloater", .bool, .required)
+            .field("createdAt", .datetime)
             .unique(on: "name")
             .create()
     }
