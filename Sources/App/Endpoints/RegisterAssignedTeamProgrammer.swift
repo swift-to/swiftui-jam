@@ -4,29 +4,30 @@ import Vapor
 import FluentPostgresDriver
 import APIRouting
 
-struct RegisterFloaterRequestBody: Decodable {
+struct RegisterAssignedTeamProgrammerRequestBody: Decodable {
     var email: String
     var name: String
+    var notes: String?
 }
 
-struct RegisterFloaterEndpoint: APIRoutingEndpoint {
+struct RegisterAssignedTeamProgrammer: APIRoutingEndpoint {
     
     static var method: APIRoutingHTTPMethod = .post
-    static var path: String = "/register-floater"
+    static var path: String = "/register-assigned-programmer"
     
     static func run(
         context: UnauthorizedRoutingContext,
         parameters: Void,
         query: Void,
-        body: RegisterFloaterRequestBody
+        body: RegisterAssignedTeamProgrammerRequestBody
     ) throws -> EventLoopFuture<HTTPStatus> {
         
         return try User.create(
             name: body.name,
             email: body.email,
-            isFloater: true,
-            requiresRandomAssignment: false,
-            notes: nil,
+            isFloater: false,
+            requiresRandomAssignment: true,
+            notes: body.notes,
             on: context.db
         )
         .map { _ in .ok }

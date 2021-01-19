@@ -8,6 +8,7 @@
         <option value="team-captain">Team Captain/Solo Programmer</option>
         <option value="team-member">Team Member</option>
         <option value="floater">Floating Designer</option>
+        <option value="assigned-programmer">Randomly Assigned Team Programmer</option>
       </select>
 
       <label for="name">Name</label>
@@ -31,6 +32,14 @@
           <select name="existingTeamId" id="existingTeamId" v-model="formData.existingTeamId">
             <option v-for="team in teams" v-bind:key="team.id" :value="team.id">{{team.name}}</option>
           </select>
+      </div>
+
+      <div v-if="registerAs == 'assigned-programmer'">
+        <label for="notes">Tell us about yourself.
+          <br />What is your skill level?
+          <br />What would you like to accomplish during the jam?
+        </label>
+        <textarea name="notes" id="notes" v-model="formData.notes"></textarea>
       </div>
 
       <br/><br/>
@@ -124,6 +133,9 @@ export default {
         case "floater":
           path += "floater"
           break
+        case "assigned-programmer":
+          path += "assigned-programmer"
+          break
         default: 
           console.log("unexpected path")
           return
@@ -159,7 +171,11 @@ strong.warning {
   color: coral;
 }
 
-input, select, label {
+input, select, label, textarea {
   font-size: 150%;
+}
+
+textarea {
+  min-width: 300pt;
 }
 </style>

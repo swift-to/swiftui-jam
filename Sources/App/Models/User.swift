@@ -16,8 +16,14 @@ final class User: Model {
     @OptionalField(key: "bio")
     var bio: String?
     
+    @OptionalField(key: "notes")
+    var notes: String?
+    
     @Field(key: "isFloater")
     var isFloater: Bool
+    
+    @Field(key: "requiresRandomAssignment")
+    var requiresRandomAssignment: Bool
     
     @Timestamp(key: "createdAt", on: .create)
     var createdAt: Date?
@@ -30,6 +36,8 @@ final class User: Model {
         name: String,
         email: String,
         isFloater: Bool,
+        requiresRandomAssignment: Bool,
+        notes: String?,
         on db: Database
     ) throws -> EventLoopFuture<User> {
         
@@ -50,6 +58,8 @@ final class User: Model {
                 newUser.name = name
                 newUser.email = email
                 newUser.isFloater = isFloater
+                newUser.requiresRandomAssignment = requiresRandomAssignment
+                newUser.notes = notes
                 return newUser.create(on: db).map { _ in newUser }
             }
     }

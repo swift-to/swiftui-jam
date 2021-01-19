@@ -41,6 +41,8 @@ struct RegisterTeamMemberEndpoint: APIRoutingEndpoint {
                         name: body.name,
                         email: body.email,
                         isFloater: false,
+                        requiresRandomAssignment: false,
+                        notes: nil,
                         on: context.db
                     )
                     .flatMap { newUser in

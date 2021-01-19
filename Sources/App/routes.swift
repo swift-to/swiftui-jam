@@ -11,6 +11,7 @@ func routes(_ app: Application) throws {
         RegisterTeamMemberEndpoint.register(in: $0)
         RegisterCaptainEndpoint.register(in: $0)
         RegisterFloaterEndpoint.register(in: $0)
+        RegisterAssignedTeamProgrammer.register(in: $0)
         
         GetTeamsEndpoint.register(in: $0)
     }

@@ -36,6 +36,7 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateUserTableMigration())
     app.migrations.add(CreateTeamTableMigration())
     app.migrations.add(CreateUserTeamTableMigration())
+    app.migrations.add(AddRandomAssignmentColumn())
     
     #if DEBUG
 //    try app.autoRevert().wait()
