@@ -29,7 +29,7 @@ module.exports = {
           "og:title": data.title,
           "og:image": data.metaIcon,
           "og:description": data.description,
-          "og:url": "https://www.swiftui-jam.com"
+          "og:url": "https://www.swiftuijam.com"
         }
       })
     ]
