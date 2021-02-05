@@ -1,12 +1,18 @@
 import Vapor
 
 enum EnvironmentKey: String {
+    case awsAccessKeyId = "AWS_ACCESS_KEY_ID"
+    case awsSecretAccessKey = "AWS_SECRET_ACCESS_KEY"
+    case awsS3Bucket = "AWS_S3_BUCKET"
+    
     case dbHost = "DATABASE_HOST"
     case dbUser = "DATABASE_USERNAME"
     case dbPassword = "DATABASE_PASSWORD"
     case dbName = "DATABASE_NAME"
     
     case dbUrl = "DATABASE_URL"
+    
+    case jwtSecret = "JWT_SECRET"
 }
 
 extension Environment {
