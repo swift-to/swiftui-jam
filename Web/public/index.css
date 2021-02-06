@@ -7,6 +7,16 @@
   100% {transform: rotate(0deg);}
 }
 
+header .branding {
+  display: block;
+  float: left;
+  text-align: center;
+}
+
+.presenting-sponsor-title p {
+  margin: 0;
+}
+
 header .logo {
   position: relative;
   display: block;
@@ -153,6 +163,7 @@ h1, h2, h3, h4, h5, h6 {
   position: relative; }
 
 h1 {
+  margin: 0;
   font-size: 28px;
   color: black; }
 
@@ -173,6 +184,7 @@ hr {
   color: #cccccc;
   height: 4px;
   padding: 0;
+  margin: 40px 0;
 }
 
 li p.first {
@@ -197,10 +209,36 @@ blockquote {
 img {
   max-width: 100%; }
 
+#intro-sponsor .row {
+  margin-top: 30px;
+}
+
+img.sponsor-mention {
+  display: block;
+  float: left;
+}
+
+p.details-pro-title {
+  float: left;
+  padding: 0;
+  margin: 0;
+  line-height: 128px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  margin-left: 20px;
+
+  text-decoration: none;
+  color: black;
+}
+
 @media screen and (min-width: 914px) {
     body {
         width: 854px;
         margin:0 auto;
+    }
+    .presenting-sponsor-title.mobile {
+      display: none;
     }
 }
 
@@ -209,6 +247,9 @@ img {
     clear: both;
     width: 100%;
     padding-top: 10pt;
+  }
+  .presenting-sponsor-title.desktop {
+    display: none;
   }
 
   .organizer-container {

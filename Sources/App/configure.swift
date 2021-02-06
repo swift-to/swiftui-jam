@@ -14,6 +14,27 @@ public func configure(_ app: Application) throws {
     
     app.middleware.use(ErrorMiddleware.default(environment: app.environment))
     
+    // Add HMAC with SHA-256 signer.
+    app.jwt.signers.use(
+        .hs256(
+            key: try Environment.getByKeyThrowing(.jwtSecret)
+        )
+    )
+    
+    let accessKey = try Environment.getByKeyThrowing(.awsAccessKeyId)
+    let secretKey = try Environment.getByKeyThrowing(.awsSecretAccessKey)
+    app.s3.manager = S3Manager(
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey,
+        region: .useast1
+    )
+    
+    let extractedExpr = SESManager(
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey
+    )
+    app.ses.manager = extractedExpr
+    
     if app.environment == .production {
         guard var config: PostgresConfiguration = PostgresConfiguration(
             url: try Environment.getByKeyThrowing(.dbUrl)
