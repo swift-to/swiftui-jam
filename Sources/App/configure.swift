@@ -29,11 +29,10 @@ public func configure(_ app: Application) throws {
         region: .useast1
     )
     
-    let extractedExpr = SESManager(
+    app.ses.manager = SESManager(
         accessKeyId: accessKey,
         secretAccessKey: secretKey
     )
-    app.ses.manager = extractedExpr
     
     if app.environment == .production {
         guard var config: PostgresConfiguration = PostgresConfiguration(
@@ -58,6 +57,9 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateTeamTableMigration())
     app.migrations.add(CreateUserTeamTableMigration())
     app.migrations.add(AddRandomAssignmentColumn())
+    app.migrations.add(CreateAddressTableMigration())
+    app.migrations.add(CreateSubmissionTableMigration())
+    app.migrations.add(CreateSubmissionImageTableMigration())
     
     #if DEBUG
 //    try app.autoRevert().wait()

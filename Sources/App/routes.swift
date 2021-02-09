@@ -54,53 +54,6 @@ func routes(_ app: Application) throws {
     }
 }
 
-struct UnauthorizedRoutingContext: APIRoutingContext {
-    var eventLoop: EventLoop
-    var db: FluentKit.Database
-    
-    static func createFrom(request: Request) throws -> UnauthorizedRoutingContext {
-        return .init(
-            eventLoop: request.eventLoop,
-            db: request.db
-        )
-    }
-}
-
-struct AccessManagementContext: APIRoutingContext {
-    
-    var eventLoop: EventLoop
-    var db: FluentKit.Database
-    var jwt: JWTContext
-    var ses: SESManager
-    
-    static func createFrom(request: Request) throws -> AccessManagementContext {
-        return .init(
-            eventLoop: request.eventLoop,
-            db: request.db,
-            jwt: request.jwt,
-            ses: request.ses.manager
-        )
-    }
-}
-
-protocol JWTContext {
-    func verify<Payload>(as payload: Payload.Type) throws -> Payload
-        where Payload: JWTPayload
-
-
-    func verify<Payload>(_ message: String, as payload: Payload.Type) throws -> Payload
-        where Payload: JWTPayload
-
-
-    func verify<Message, Payload>(_ message: Message, as payload: Payload.Type) throws -> Payload
-        where Message: DataProtocol, Payload: JWTPayload
-
-    func sign<Payload>(_ jwt: Payload, kid: JWKIdentifier?) throws -> String
-        where Payload: JWTPayload
-}
-
-extension Request.JWT: JWTContext {}
-
 public func generateAPIDocs() throws -> String {
     let filePath = #file
     let sourcesPath = URL(fileURLWithPath: filePath)

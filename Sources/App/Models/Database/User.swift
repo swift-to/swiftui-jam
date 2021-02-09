@@ -28,6 +28,12 @@ final class User: Model {
     @Timestamp(key: "createdAt", on: .create)
     var createdAt: Date?
     
+    @Siblings(through: UserTeam.self, from: \.$user, to: \.$team)
+    var teams: [Team] // Should only ever have one relation at a time but vapor doesnt currently have a model definition that works like this
+    
+    @OptionalParent(key: "addressId")
+    var address: Address?
+    
     init() {
         isFloater = false
     }
@@ -62,5 +68,44 @@ final class User: Model {
                 newUser.notes = notes
                 return newUser.create(on: db).map { _ in newUser }
             }
+    }
+}
+
+enum RegistrationTypeViewModel: String, Codable {
+    case teamCaptain
+    case teamMember
+    case floatingDesigner
+    case randomAssignedProgrammer
+    case notParticipating
+}
+
+struct UserViewModel: Codable, Content {
+    var id: UUID
+    var name: String
+    var type: RegistrationTypeViewModel
+    var team: TeamViewModel?
+}
+
+extension UserViewModel {
+    init(_ user: User, team: Team?) throws {
+        self.id = try user.requireID()
+        self.team = try team.map(TeamViewModel.init)
+        
+        self.name = user.name
+        
+        if let team = team {
+            if team.$captain.id == self.id {
+                self.type = .teamCaptain
+            } else {
+                self.type = .teamMember
+            }
+        }
+        else if user.isFloater {
+            self.type = .floatingDesigner
+        } else if user.requiresRandomAssignment {
+            self.type = .randomAssignedProgrammer
+        } else {
+            self.type = .notParticipating
+        }
     }
 }

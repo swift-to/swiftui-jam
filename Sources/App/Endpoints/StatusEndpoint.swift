@@ -1,6 +1,5 @@
 import Fluent
 import Vapor
-//import JWT
 import APIRouting
 
 struct StatusEndpoint: APIRoutingEndpoint {
