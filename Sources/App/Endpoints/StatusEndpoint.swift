@@ -5,7 +5,7 @@ import APIRouting
 
 struct StatusEndpoint: APIRoutingEndpoint {
     
-    struct OKResponse: Content {
+    struct OKResponse: Content, Equatable {
         var status: String = "ok"
     }
     

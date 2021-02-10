@@ -23,7 +23,7 @@ final class Team: Model {
     var createdAt: Date?
 }
 
-struct TeamViewModel: Codable, Content {
+struct TeamViewModel: Codable, Content, Equatable {
     var id: UUID
     var name: String
 //    var captain: User?
