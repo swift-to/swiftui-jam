@@ -12,9 +12,11 @@ struct GetSubmissions: APIRoutingEndpoint {
         parameters: Void,
         query: Void,
         body: Void
-    ) throws -> EventLoopFuture<[TeamViewModel]> {
+    ) throws -> EventLoopFuture<[TeamDetailsViewModel]> {
         Team.query(on: context.db)
+            .with(\.$captain)
+            .with(\.$members)
             .all()
-            .flatMapThrowing { try $0.map(TeamViewModel.init) }
+            .flatMapThrowing { try $0.map(TeamDetailsViewModel.init) }
     }
 }

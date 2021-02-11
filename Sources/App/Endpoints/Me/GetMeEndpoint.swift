@@ -13,16 +13,29 @@ struct GetMeEndpoint: APIRoutingEndpoint {
         parameters: Void,
         query: Void,
         body: Void
-    ) throws -> EventLoopFuture<UserViewModel> {
-        User.find(context.auth.id, on: context.db)
+    ) throws -> EventLoopFuture<UserDetailsViewModel> {
+        User.query(on: context.db)
+            .with(\.$address)
+            .filter(\.$id == context.auth.id)
+            .first()
             .unwrap(or: Abort(.notFound))
             .flatMap { user in
                 UserTeam.query(on: context.db)
                     .filter(\.$user.$id == context.auth.id)
-                    .with(\.$team)
                     .first()
-                    .map { (user, $0?.team) }
+                    .flatMap { uTeam -> EventLoopFuture<Team?> in
+                        if let userTeam = uTeam {
+                            return Team.query(on: context.db)
+                                .with(\.$captain)
+                                .with(\.$members)
+                                .filter(\.$id == userTeam.$team.id)
+                                .first()
+                        } else {
+                            return context.eventLoop.makeSucceededFuture(nil)
+                        }
+                    }
+                    .map { (user, $0) }
             }
-            .flatMapThrowing { try UserViewModel($0, team: $1) }
+            .flatMapThrowing { try UserDetailsViewModel($0, team: $1, address: $0.address) }
     }
 }

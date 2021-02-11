@@ -2,7 +2,7 @@ import Fluent
 import Vapor
 
 final class Submission: Model {
-    static let schema = "submission"
+    static let schema = "submissions"
     
     @ID(key: .id)
     var id: UUID?
@@ -31,13 +31,13 @@ struct SubmissionViewModel: Codable, Content {
     var id: UUID
     var name: String
     var description: String
-    var team: TeamViewModel
+    var team: TeamDetailsViewModel
 }
 
 extension SubmissionViewModel {
     init(_ submission: Submission, team: Team) throws {
         self.id = try submission.requireID()
-        self.team = try TeamViewModel(team)
+        self.team = try TeamDetailsViewModel(team)
         
         self.name = submission.name
         self.description = submission.description

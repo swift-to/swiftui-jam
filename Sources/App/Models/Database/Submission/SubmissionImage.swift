@@ -3,7 +3,7 @@ import Vapor
 
 final class SubmissionImage: Model {
     
-    static var schema: String = "submissionImage"
+    static var schema: String = "submissionImages"
     
     @ID(key: .id)
     var id: UUID?

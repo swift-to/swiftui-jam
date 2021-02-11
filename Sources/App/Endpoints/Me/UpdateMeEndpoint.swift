@@ -28,17 +28,53 @@ struct UpdateMeEndpoint: APIRoutingEndpoint {
         query: Void,
         body: UpdateMeBody
     ) throws -> EventLoopFuture<HTTPStatus> {
-        User.find(context.auth.id, on: context.db)
+        User.query(on: context.db)
+            .with(\.$address)
+            .filter(\.$id == context.auth.id)
+            .first()
             .unwrap(or: Abort(.notFound))
-            .flatMap { user in
+            .flatMap { user -> EventLoopFuture<User> in
                 user.name = body.name
                 return user.save(on: context.db)
                     .map { user }
             }
-//            .flatMap { user in
-//                Address.query(on: context.db)
-//                    .firs
-//            }
+            .flatMap { user in
+                if let addressUpdate = body.address {
+                    let address: Address
+                    if let oldAddress = user.address {
+                        address = oldAddress
+                        oldAddress.street = addressUpdate.street
+                        oldAddress.street2 = addressUpdate.street2
+                        oldAddress.city = addressUpdate.city
+                        oldAddress.postalCode = addressUpdate.postalCode
+                        oldAddress.country = addressUpdate.country
+                    } else {
+                        let newAddress = Address()
+                        address = newAddress
+                        newAddress.street = addressUpdate.street
+                        newAddress.street2 = addressUpdate.street2
+                        newAddress.city = addressUpdate.city
+                        newAddress.postalCode = addressUpdate.postalCode
+                        newAddress.country = addressUpdate.country
+                        do {
+                            newAddress.$user.id = try user.requireID()
+                        } catch {
+                            return context.eventLoop.makeFailedFuture(error)
+                        }
+                    }
+                    return address.save(on: context.db)
+                        .flatMap {
+                            do {
+                                user.$address.id = try address.requireID()
+                                return user.save(on: context.db)
+                            } catch {
+                                return context.eventLoop.makeFailedFuture(error)
+                            }
+                        }
+                } else {
+                    return context.eventLoop.makeSucceededFuture(())
+                }
+            }
             .map { .ok }
     }
 }

@@ -6,7 +6,7 @@ public struct CreateSubmissionImageTableMigration: Migration {
     
     public func prepare(on database: Database) -> EventLoopFuture<Void> {
         return database
-            .schema("submissionImage")
+            .schema("submissionImages")
             .id()
             .field(
                 "submissionId",
@@ -23,7 +23,7 @@ public struct CreateSubmissionImageTableMigration: Migration {
 
     public func revert(on database: Database) -> EventLoopFuture<Void> {
         return database
-            .schema("submissionImage")
+            .schema("submissionImages")
             .delete()
     }
 }

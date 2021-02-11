@@ -32,10 +32,20 @@ final class Address: Model {
     }
 }
 
-struct AddressViewModel: Decodable {
+struct AddressViewModel: Codable, Content, Equatable {
     var street: String
     var street2: String?
     var city: String
     var postalCode: String
     var country: String
+}
+
+extension AddressViewModel {
+    init(_ address: Address) {
+        street = address.street
+        street2 = address.street2
+        city = address.city
+        postalCode = address.postalCode
+        country = address.country
+    }
 }

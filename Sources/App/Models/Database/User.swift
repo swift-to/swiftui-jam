@@ -71,7 +71,7 @@ final class User: Model {
     }
 }
 
-enum RegistrationTypeViewModel: String, Codable {
+enum RegistrationTypeViewModel: String, Codable, Equatable {
     case teamCaptain
     case teamMember
     case floatingDesigner
@@ -79,17 +79,30 @@ enum RegistrationTypeViewModel: String, Codable {
     case notParticipating
 }
 
-struct UserViewModel: Codable, Content {
+struct UserViewModel: Codable, Content, Equatable {
     var id: UUID
     var name: String
-    var type: RegistrationTypeViewModel
-    var team: TeamViewModel?
 }
 
 extension UserViewModel {
-    init(_ user: User, team: Team?) throws {
+    init(_ user: User) throws {
         self.id = try user.requireID()
-        self.team = try team.map(TeamViewModel.init)
+        self.name = user.name
+    }
+}
+
+struct UserDetailsViewModel: Codable, Content, Equatable {
+    var id: UUID
+    var name: String
+    var type: RegistrationTypeViewModel
+    var team: TeamDetailsViewModel?
+    var address: AddressViewModel?
+}
+
+extension UserDetailsViewModel {
+    init(_ user: User, team: Team?, address: Address?) throws {
+        self.id = try user.requireID()
+        self.team = try team.map(TeamDetailsViewModel.init)
         
         self.name = user.name
         
@@ -107,5 +120,7 @@ extension UserViewModel {
         } else {
             self.type = .notParticipating
         }
+        
+        self.address = address.map(AddressViewModel.init)
     }
 }

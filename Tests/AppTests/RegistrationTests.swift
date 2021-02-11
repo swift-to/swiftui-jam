@@ -29,6 +29,7 @@ final class RegistrationTests: XCTestCase {
     override func tearDownWithError() throws {
         try super.tearDownWithError()
         try app.autoRevert().wait()
+        app.shutdown()
     }
     
     func testRegisterCaptainEndpoint() throws {

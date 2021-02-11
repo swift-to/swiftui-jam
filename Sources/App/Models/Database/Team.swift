@@ -53,13 +53,27 @@ extension Team {
 struct TeamViewModel: Codable, Content, Equatable {
     var id: UUID
     var name: String
-//    var captain: User?
-//    var members: [User]?
 }
 
 extension TeamViewModel {
     init(_ team: Team) throws {
         self.id = try team.requireID()
         self.name = team.name
+    }
+}
+
+struct TeamDetailsViewModel: Codable, Content, Equatable {
+    var id: UUID
+    var name: String
+    var captain: UserViewModel
+    var members: [UserViewModel]
+}
+
+extension TeamDetailsViewModel {
+    init(_ team: Team) throws {
+        self.id = try team.requireID()
+        self.name = team.name
+        self.captain = try UserViewModel(team.captain)
+        self.members = try team.members.map(UserViewModel.init)
     }
 }

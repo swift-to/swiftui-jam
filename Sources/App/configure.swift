@@ -53,13 +53,7 @@ public func configure(_ app: Application) throws {
         ), as: .psql)
     }
     
-    app.migrations.add(CreateUserTableMigration())
-    app.migrations.add(CreateTeamTableMigration())
-    app.migrations.add(CreateUserTeamTableMigration())
-    app.migrations.add(AddRandomAssignmentColumn())
-    app.migrations.add(CreateAddressTableMigration())
-    app.migrations.add(CreateSubmissionTableMigration())
-    app.migrations.add(CreateSubmissionImageTableMigration())
+    addMigrations(app)
     
     #if DEBUG
 //    try app.autoRevert().wait()
@@ -67,4 +61,20 @@ public func configure(_ app: Application) throws {
     try app.autoMigrate().wait()
     
     try routes(app)
+}
+
+public func addMigrations(_ app: Application) {
+    app.migrations.add(CreateUserTableMigration())
+    app.migrations.add(CreateTeamTableMigration())
+    app.migrations.add(CreateUserTeamTableMigration())
+    app.migrations.add(AddRandomAssignmentColumn())
+    
+    // Address
+    app.migrations.add(CreateAddressTableMigration())
+    app.migrations.add(AddUserAddressColumn())
+//    app.migrations.add(AddAddressUserColumn())
+    
+    //Submissions
+    app.migrations.add(CreateSubmissionTableMigration())
+    app.migrations.add(CreateSubmissionImageTableMigration())
 }

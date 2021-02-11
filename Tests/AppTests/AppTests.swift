@@ -8,19 +8,21 @@ final class AppTests: XCTestCase {
         ("testGetTeamsEndpoint", testGetTeamsEndpoint)
     ]
     
-    var app: Application!
+    var app: Application = {
+        let app = Application(.testing)
+        try! configure(app)
+        return app
+    }()
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-
-        app = Application(.testing)
-        try configure(app)
         try app.autoMigrate().wait()
     }
     
     override func tearDownWithError() throws {
         try super.tearDownWithError()
         try app.autoRevert().wait()
+        app.shutdown()
     }
 
     func testStatusEndpoint() throws {
@@ -51,6 +53,7 @@ final class AppTests: XCTestCase {
         team.requiresFloater = false
         team.$captain.id = try user.requireID()
         try team.save(on: app.db).wait()
+        try team.$members.attach([user], on: app.db).wait()
         
         let res = try GetTeamsEndpoint.run(
             context: context,

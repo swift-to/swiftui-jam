@@ -21,12 +21,13 @@ struct ChangeTeam: APIRoutingEndpoint {
         context.db.transaction { (db) -> EventLoopFuture<Void> in
             User.query(on: db)
                 .with(\.$teams)
+                .filter(\.$id == context.auth.id)
                 .first()
                 .unwrap(or: Abort(.notFound))
                 .flatMap { user -> EventLoopFuture<User> in
                     if let team = user.teams.first {
                         return user.$teams.detach(team, on: db)
-                            .map { _ in user }
+                            .map { user }
                     }
                     return db.eventLoop.makeSucceededFuture(user)
                 }

@@ -11,7 +11,7 @@ public struct AddUserAddressColumn: Migration {
             .field(
                 "addressId",
                 .uuid,
-                .foreignKey("address", .key("userId"),
+                .foreignKey("address", .key("id"),
                             onDelete: .noAction,
                             onUpdate: .noAction)
             )

@@ -7,7 +7,7 @@ public struct CreateSubmissionTableMigration: Migration {
     
     public func prepare(on database: Database) -> EventLoopFuture<Void> {
         return database
-            .schema("submission")
+            .schema("submissions")
             .id()
             .field(
                 "teamId",
@@ -26,7 +26,7 @@ public struct CreateSubmissionTableMigration: Migration {
 
     public func revert(on database: Database) -> EventLoopFuture<Void> {
         return database
-            .schema("users")
+            .schema("submissions")
             .delete()
     }
 }

@@ -12,7 +12,7 @@ public struct CreateAddressTableMigration: Migration {
             .field(
                 "userId",
                 .uuid,
-                .foreignKey("users", .key("addressId"),
+                .foreignKey("users", .key("id"),
                             onDelete: .noAction,
                             onUpdate: .noAction),
                 .required
