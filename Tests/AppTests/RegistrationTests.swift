@@ -66,7 +66,7 @@ final class RegistrationTests: XCTestCase {
     }
     
     func testRegisterAssignedTeamProgrammer() throws {
-        let res = try RegisterAssignedTeamProgrammer.run(
+        let res = try RegisterAssignedTeamProgrammerEndpoint.run(
             context: context,
             parameters: (),
             query: (),

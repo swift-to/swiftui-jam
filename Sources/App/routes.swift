@@ -12,11 +12,18 @@ func routes(_ app: Application) throws {
         RegisterTeamMemberEndpoint.register(in: $0)
         RegisterCaptainEndpoint.register(in: $0)
         RegisterFloaterEndpoint.register(in: $0)
-        RegisterAssignedTeamProgrammer.register(in: $0)
+        RegisterAssignedTeamProgrammerEndpoint.register(in: $0)
         
         GetTeamsEndpoint.register(in: $0)
+        UpdateTeamEndpoint.register(in: $0)
         
-        RequestEmailLoginAccessEndpoint.register(in: $0)
+        EmailLoginEndpoint.register(in: $0)
+        PasswordLoginEndpoint.register(in: $0)
+        
+        ChangeTeamEndpoint.register(in: $0)
+        GetMeEndpoint.register(in: $0)
+        UpdateMeEndpoint.register(in: $0)
+        UpdatePasswordEndpoint.register(in: $0)
     }
     
     app.get("docs", "json") { (request) -> JSONString in

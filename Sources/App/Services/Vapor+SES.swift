@@ -7,13 +7,13 @@ extension Application {
 
     struct SES {
         struct ClientKey: StorageKey {
-            typealias Value = SESManager
+            typealias Value = SESManagingService
         }
 
-        var manager: SESManager {
+        var manager: SESManagingService {
             get {
                 guard let client = self.application.storage[ClientKey.self] else {
-                    fatalError("SESManager not setup. Use application.aws.client = ...")
+                    fatalError("SESManagingService not setup. Use application.aws.client = ...")
                 }
                 return client
             }
@@ -34,7 +34,7 @@ extension Request {
     }
 
     struct SES {
-        var manager: SESManager {
+        var manager: SESManagingService {
             return request.application.ses.manager
         }
 

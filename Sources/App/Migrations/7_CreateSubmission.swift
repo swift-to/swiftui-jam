@@ -19,7 +19,7 @@ public struct CreateSubmissionTableMigration: Migration {
             )
             .field("name", .string, .required)
             .field("description", .string, .required)
-            .field("github", .string, .required)
+            .field("repoUrl", .string, .required)
         
             .create()
     }

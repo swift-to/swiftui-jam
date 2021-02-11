@@ -100,7 +100,7 @@ final class ChangeTeamTests: XCTestCase {
             auth: try teamMember.generateAuthPayload(),
             s3: app.s3.manager)
         
-        let res = try ChangeTeam.run(
+        let res = try ChangeTeamEndpoint.run(
             context: memberContext,
             parameters: (),
             query: (),
@@ -137,7 +137,7 @@ final class ChangeTeamTests: XCTestCase {
         
         let team = try Team.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
                 
-        _ = try RegisterAssignedTeamProgrammer.run(
+        _ = try RegisterAssignedTeamProgrammerEndpoint.run(
             context: context,
             parameters: (),
             query: (),
@@ -164,7 +164,7 @@ final class ChangeTeamTests: XCTestCase {
             auth: try assignedProgrammer.generateAuthPayload(),
             s3: app.s3.manager)
         
-        let res = try ChangeTeam.run(
+        let res = try ChangeTeamEndpoint.run(
             context: authContext,
             parameters: (),
             query: (),

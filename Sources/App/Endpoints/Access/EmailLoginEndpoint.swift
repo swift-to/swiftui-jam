@@ -3,26 +3,29 @@ import Vapor
 import JWT
 import APIRouting
 
-struct EmailLoginAccessRequestBody: Decodable {
+struct EmailLoginBody: Decodable {
     var email: String
 }
 
-struct RequestEmailLoginAccessEndpoint: APIRoutingEndpoint {
+struct EmailLoginEndpoint: APIRoutingEndpoint {
 
     static var method: APIRoutingHTTPMethod = .post
-    static var path: String = "/request-email-login"
+    static var path: String = "/login/email"
     
     static func run(
         context: AccessManagementContext,
         parameters: Void,
         query: Void,
-        body: EmailLoginAccessRequestBody
+        body: EmailLoginBody
     ) throws -> EventLoopFuture<HTTPStatus> {
         return User.query(on: context.db)
             .filter(\.$email == body.email)
             .first()
-            .unwrap(orError: Abort(.notFound))
             .flatMap { user -> EventLoopFuture<Void> in
+                guard let user = user else {
+                    // succeed regardless. We never give away if the email address exists
+                    return context.eventLoop.makeSucceededFuture(())
+                }
                 
                 do {
                     let auth = try AuthPayload(id: user.requireID(), email: body.email)
@@ -42,7 +45,6 @@ struct RequestEmailLoginAccessEndpoint: APIRoutingEndpoint {
                     return context.eventLoop.makeFailedFuture(Abort(.internalServerError))
                 }
             }
-            
             .map { _ in .ok }
     }
 }

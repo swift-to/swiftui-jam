@@ -59,7 +59,7 @@ final class UpdateTeamTests: XCTestCase {
             auth: try user.generateAuthPayload(),
             s3: app.s3.manager)
         
-        let res = try UpdateTeam.run(
+        let res = try UpdateTeamEndpoint.run(
             context: context,
             parameters: .init(id: try team.requireID().uuidString),
             query: (),
@@ -106,7 +106,7 @@ final class UpdateTeamTests: XCTestCase {
             s3: app.s3.manager)
         
         // Expect
-        XCTAssertThrowsError(try UpdateTeam.run(
+        XCTAssertThrowsError(try UpdateTeamEndpoint.run(
             context: context,
             parameters: .init(id: try team.requireID().uuidString),
             query: (),

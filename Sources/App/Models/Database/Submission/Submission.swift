@@ -16,8 +16,8 @@ final class Submission: Model {
     @Field(key: "description")
     var description: String
     
-    @Field(key: "github")
-    var github: String
+    @Field(key: "repoUrl")
+    var repoUrl: String
     
     @Children(for: \.$submission)
     var images: [SubmissionImage]

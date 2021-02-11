@@ -12,7 +12,7 @@ struct UpdateTeamBody: Decodable {
     var requiresFloater: Bool
 }
 
-struct UpdateTeam: APIRoutingEndpoint {
+struct UpdateTeamEndpoint: APIRoutingEndpoint {
     
     static var method: APIRoutingHTTPMethod = .patch
     static var path: String = "/teams/:id"

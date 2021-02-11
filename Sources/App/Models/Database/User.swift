@@ -13,6 +13,9 @@ final class User: Model {
     @Field(key: "email")
     var email: String
     
+    @OptionalField(key: "password")
+    var password: String?
+    
     @OptionalField(key: "bio")
     var bio: String?
     
@@ -24,6 +27,9 @@ final class User: Model {
     
     @Field(key: "requiresRandomAssignment")
     var requiresRandomAssignment: Bool
+    
+    @Field(key: "isRegistrationEmailSent")
+    var isRegistrationEmailSent: Bool
     
     @Timestamp(key: "createdAt", on: .create)
     var createdAt: Date?

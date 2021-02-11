@@ -21,18 +21,7 @@ public func configure(_ app: Application) throws {
         )
     )
     
-    let accessKey = try Environment.getByKeyThrowing(.awsAccessKeyId)
-    let secretKey = try Environment.getByKeyThrowing(.awsSecretAccessKey)
-    app.s3.manager = S3Manager(
-        accessKeyId: accessKey,
-        secretAccessKey: secretKey,
-        region: .useast1
-    )
-    
-    app.ses.manager = SESManager(
-        accessKeyId: accessKey,
-        secretAccessKey: secretKey
-    )
+    try setUpAWSManagers(app)
     
     if app.environment == .production {
         guard var config: PostgresConfiguration = PostgresConfiguration(
@@ -63,6 +52,23 @@ public func configure(_ app: Application) throws {
     try routes(app)
 }
 
+public func setUpAWSManagers(_ app: Application) throws {
+    
+    let accessKey = try Environment.getByKeyThrowing(.awsAccessKeyId)
+    let secretKey = try Environment.getByKeyThrowing(.awsSecretAccessKey)
+    
+    app.s3.manager = S3Manager(
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey,
+        region: .useast1
+    )
+    
+    app.ses.manager = SESManager(
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey
+    )
+}
+
 public func addMigrations(_ app: Application) {
     app.migrations.add(CreateUserTableMigration())
     app.migrations.add(CreateTeamTableMigration())
@@ -72,9 +78,12 @@ public func addMigrations(_ app: Application) {
     // Address
     app.migrations.add(CreateAddressTableMigration())
     app.migrations.add(AddUserAddressColumn())
-//    app.migrations.add(AddAddressUserColumn())
     
     //Submissions
     app.migrations.add(CreateSubmissionTableMigration())
     app.migrations.add(CreateSubmissionImageTableMigration())
+    
+    // User password/registration confirmation
+    app.migrations.add(AddUserPasswordAndRegistrationConfirmationColumns())
 }
+

@@ -21,7 +21,7 @@ struct AccessManagementContext: APIRoutingContext {
     var eventLoop: EventLoop
     var db: FluentKit.Database
     var jwt: JWTContext
-    var ses: SESManager
+    var ses: SESManagingService
     
     static func createFrom(request: Request) throws -> AccessManagementContext {
         return .init(

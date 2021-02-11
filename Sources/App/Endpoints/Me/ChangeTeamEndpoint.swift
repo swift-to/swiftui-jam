@@ -7,7 +7,7 @@ struct ChangeTeamBody: Decodable {
     var teamId: UUID
 }
 
-struct ChangeTeam: APIRoutingEndpoint {
+struct ChangeTeamEndpoint: APIRoutingEndpoint {
     
     static var method: APIRoutingHTTPMethod = .post
     static var path: String = "/me/team"

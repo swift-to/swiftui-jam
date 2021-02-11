@@ -192,7 +192,7 @@ final class MeTests: XCTestCase {
     
     func testMeEndpointAssignedProgrammer() throws {
         // Given
-        _ = try RegisterAssignedTeamProgrammer.run(
+        _ = try RegisterAssignedTeamProgrammerEndpoint.run(
             context: context,
             parameters: (),
             query: (),
