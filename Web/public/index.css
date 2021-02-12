@@ -65,6 +65,11 @@ button.nav-item {
   display: block;
 }
 
+button.nav-item.logout {
+  float: right;
+  background-color: crimson;
+}
+
 div#intro {
   position: relative;
   font-size: 15pt;

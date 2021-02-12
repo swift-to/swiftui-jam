@@ -13,6 +13,10 @@
           <Register @registrationComplete="goToRegisterConfirmation" />
       </div>
 
+      <div v-if="currentView == 'login'">
+          <Login />
+      </div>
+
       <div v-if="currentView == 'confirmation'">
          <h3>Registration complete. You will be contacted with more information.</h3>
          <a href="/">Home</a>
@@ -21,7 +25,7 @@
       <div v-if="currentView == 'me'">
          <Me v-bind:accessToken="accessToken" />
          <div>
-           <button class="nav-item" @click="logout()">Logout</button>
+           <button class="nav-item logout" @click="logout()">Logout</button>
          </div>
       </div>
       
@@ -31,17 +35,19 @@
 <script>
 import Register from './components/Register.vue'
 import Me from './components/Me.vue'
+import Login from './components/Login.vue'
 
 export default {
   name: 'App',
   components: {
     Register,
-    Me
+    Me,
+    Login
   },
   data: () => {
     return {
         currentView: 'home',
-        validRoutes: ['register', 'confirmation', 'me'],
+        validRoutes: ['register', 'confirmation', 'login', 'me'],
         accessToken: null
     }
   },
@@ -58,7 +64,7 @@ export default {
       if (accessToken != null) {
         this.accessToken = accessToken
         window.localStorage.accessToken = accessToken
-        this.goToLoginHome()
+        this.goToLoggedInHome()
       }
     },
     findGetParameter: function (parameterName) {
@@ -87,7 +93,7 @@ export default {
     goToRegisterConfirmation: function() {
       window.location.hash = "#confirmation"
     },
-    goToLoginHome: function() {
+    goToLoggedInHome: function() {
       window.location.hash = "#me"
     },
     navigateTo: function(viewName) {

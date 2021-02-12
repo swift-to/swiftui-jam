@@ -9,6 +9,7 @@ struct UpdateMeBody: Decodable {
         var street: String
         var street2: String?
         var city: String
+        var state: String
         var postalCode: String
         var country: String
     }
@@ -46,6 +47,7 @@ struct UpdateMeEndpoint: APIRoutingEndpoint {
                         oldAddress.street = addressUpdate.street
                         oldAddress.street2 = addressUpdate.street2
                         oldAddress.city = addressUpdate.city
+                        oldAddress.state = addressUpdate.state
                         oldAddress.postalCode = addressUpdate.postalCode
                         oldAddress.country = addressUpdate.country
                     } else {
@@ -54,6 +56,7 @@ struct UpdateMeEndpoint: APIRoutingEndpoint {
                         newAddress.street = addressUpdate.street
                         newAddress.street2 = addressUpdate.street2
                         newAddress.city = addressUpdate.city
+                        newAddress.state = addressUpdate.state
                         newAddress.postalCode = addressUpdate.postalCode
                         newAddress.country = addressUpdate.country
                         do {

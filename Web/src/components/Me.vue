@@ -85,12 +85,35 @@
       <button class="nav-item" type="submit" @click="updatePersonalInfo()">Submit</button>
     </div>
 
+    <div v-if="state == 'edit-team-name'">
+      <EditTeamName 
+        v-bind:user="user" 
+        v-bind:state="state" 
+        v-bind:accessToken="accessToken"
+        v-on:editComplete="editComplete" />
+    </div>
+
+    <div v-if="state == 'change-team'">
+      <ChangeTeam 
+        v-bind:user="user" 
+        v-bind:state="state" 
+        v-bind:accessToken="accessToken"
+        v-on:editComplete="editComplete" />
+    </div>
+
   </div>
 </template>
 
 <script>
+import EditTeamName from './EditTeamName.vue'
+import ChangeTeam from './ChangeTeam.vue'
+
 export default {
   name: 'Me',
+  components: {
+    EditTeamName,
+    ChangeTeam
+  },
   props: ['accessToken'],
   data: () => {
     return { 
@@ -110,6 +133,10 @@ export default {
   },
   computed: {},
   methods: {
+    editComplete: function() {
+      this.state = 'home'
+      this.loadMeInfo()
+    },
     loadMeInfo: function() {
       var xhr = new XMLHttpRequest();
       xhr.onload = () => {

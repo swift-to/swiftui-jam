@@ -21,8 +21,6 @@ public func configure(_ app: Application) throws {
         )
     )
     
-    try setUpAWSManagers(app)
-    
     if app.environment == .production {
         guard var config: PostgresConfiguration = PostgresConfiguration(
             url: try Environment.getByKeyThrowing(.dbUrl)
@@ -42,7 +40,9 @@ public func configure(_ app: Application) throws {
         ), as: .psql)
     }
     
+    try setUpAWSManagers(app)
     addMigrations(app)
+    addCommands(app)
     
     #if DEBUG
 //    try app.autoRevert().wait()
@@ -85,5 +85,9 @@ public func addMigrations(_ app: Application) {
     
     // User password/registration confirmation
     app.migrations.add(AddUserPasswordAndRegistrationConfirmationColumns())
+    
 }
 
+public func addCommands(_ app: Application) {
+    app.commands.use(SendRegistrationConfirmationBulkCommand(), as: "send-registration-email-bulk", isDefault: false)
+}

@@ -64,8 +64,7 @@ final class UpdateTeamTests: XCTestCase {
             parameters: .init(id: try team.requireID().uuidString),
             query: (),
             body: .init(
-                name: "Electric Boogaloo",
-                requiresFloater: true
+                name: "Electric Boogaloo"
             )
         )
         .wait()
@@ -74,7 +73,6 @@ final class UpdateTeamTests: XCTestCase {
         let updatedTeam = try Team.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
         XCTAssertEqual(res, .ok)
         XCTAssertEqual(updatedTeam.name, "Electric Boogaloo")
-        XCTAssertEqual(updatedTeam.requiresFloater, true)
     }
     
     func testUpdateTeam_fromNonCaptain() throws {
@@ -111,8 +109,7 @@ final class UpdateTeamTests: XCTestCase {
             parameters: .init(id: try team.requireID().uuidString),
             query: (),
             body: .init(
-                name: "Electric Boogaloo",
-                requiresFloater: true
+                name: "Electric Boogaloo"
             )
         ).wait()) { err in
             XCTAssertEqual((err as? Abort)?.status, .badRequest)

@@ -64,6 +64,7 @@ final class UpdateMeTests: XCTestCase {
                     street: "s1",
                     street2: "s2",
                     city: "to",
+                    state: "ON",
                     postalCode: "123456",
                     country: "CA"
                 )
@@ -86,6 +87,7 @@ final class UpdateMeTests: XCTestCase {
                     street: "s1",
                     street2: "s2",
                     city: "to",
+                    state: "ON",
                     postalCode: "123456",
                     country: "CA"
                 )
@@ -114,6 +116,7 @@ final class UpdateMeTests: XCTestCase {
                     street: "s1",
                     street2: "s2",
                     city: "to",
+                    state: "ON",
                     postalCode: "123456",
                     country: "CA"
                 )
@@ -133,6 +136,7 @@ final class UpdateMeTests: XCTestCase {
                     street: "s3",
                     street2: "s4",
                     city: "wa",
+                    state: "BC",
                     postalCode: "asd",
                     country: "US"
                 )
@@ -155,6 +159,7 @@ final class UpdateMeTests: XCTestCase {
                     street: "s3",
                     street2: "s4",
                     city: "wa",
+                    state: "BC",
                     postalCode: "asd",
                     country: "US"
                 )

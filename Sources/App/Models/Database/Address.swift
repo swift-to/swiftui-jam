@@ -21,6 +21,9 @@ final class Address: Model {
     @Field(key: "city")
     var city: String
     
+    @Field(key: "state")
+    var state: String
+    
     @Field(key: "postalCode")
     var postalCode: String
     
@@ -36,6 +39,7 @@ struct AddressViewModel: Codable, Content, Equatable {
     var street: String
     var street2: String?
     var city: String
+    var state: String
     var postalCode: String
     var country: String
 }
@@ -45,6 +49,7 @@ extension AddressViewModel {
         street = address.street
         street2 = address.street2
         city = address.city
+        state = address.state
         postalCode = address.postalCode
         country = address.country
     }

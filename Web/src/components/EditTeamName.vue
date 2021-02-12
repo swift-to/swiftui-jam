@@ -1,54 +1,39 @@
 <template>
   <div class="edit-team-name">
-    <label for="teamId">Update Team</label>
-    <select name="teamId" id="teamId" v-model="teamId">
-      <option v-for="team in teams" v-bind:key="team.id" :value="team.id">{{team.name}}</option>
-    </select>
-    <button class="nav-item" type="submit" @click="updateTeam()">Submit</button>
+    <label for="teamName">Update Team Name</label>
+    <input name="teamName" id="teamName" v-model="teamName">
+    <button class="nav-item" type="submit" @click="updateTeamName()">Submit</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Me',
+  name: 'EditTeamName',
   props: ['accessToken', 'state', 'user'],
   data: () => {
     return { 
-      teams: [],
-      teamId: null
+      teamName: ""
     }
   },
   created: function() {
-    this.loadTeams()
+    this.teamName = this.user.team.name
   },
   methods: {
-    loadTeams: function() {
+    updateTeamName: function() {
       var xhr = new XMLHttpRequest();
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
           console.log(xhr.response)
-          this.teams = JSON.parse(xhr.responseText)
+          this.$emit('editComplete')
         } else {
           alert(xhr.responseText)
         }
       }
-      xhr.open('GET', process.env.VUE_APP_BASE_API_URL + '/api/teams')
-      xhr.send()
-    },
-    updateTeam: function() {
-      var xhr = new XMLHttpRequest();
-      xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          console.log(xhr.response)
-          this.state = 'home'
-        } else {
-          alert(xhr.responseText)
-        }
-      }
-      xhr.open('POST', process.env.VUE_APP_BASE_API_URL + '/api/me/team')
+      xhr.open('PATCH', process.env.VUE_APP_BASE_API_URL + '/api/teams/:id')
       xhr.setRequestHeader("Content-Type", "application/json")
+      xhr.setRequestHeader("Authorization", `Bearer ${this.accessToken}`)
       xhr.send(JSON.stringify({
-        teamId: this.teamId
+        name: this.teamName
       }))
     }
   }

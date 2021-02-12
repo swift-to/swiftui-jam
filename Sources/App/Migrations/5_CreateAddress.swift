@@ -20,6 +20,7 @@ public struct CreateAddressTableMigration: Migration {
             .field("street", .string, .required)
             .field("street2", .string)
             .field("city", .string, .required)
+            .field("state", .string, .required)
             .field("postalCode", .string, .required)
             .field("country", .string, .required)
             .create()

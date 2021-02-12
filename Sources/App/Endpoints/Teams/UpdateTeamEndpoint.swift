@@ -9,7 +9,6 @@ struct UpdateTeamParams: Decodable {
 
 struct UpdateTeamBody: Decodable {
     var name: String
-    var requiresFloater: Bool
 }
 
 struct UpdateTeamEndpoint: APIRoutingEndpoint {
@@ -37,7 +36,6 @@ struct UpdateTeamEndpoint: APIRoutingEndpoint {
                 }
                 .flatMap { team in
                     team.name = body.name
-                    team.requiresFloater = body.requiresFloater
                     return team.save(on: db)
                 }
         }
