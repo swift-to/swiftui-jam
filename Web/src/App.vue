@@ -13,9 +13,16 @@
           <Register @registrationComplete="goToRegisterConfirmation" />
       </div>
 
-       <div v-if="currentView == 'confirmation'">
+      <div v-if="currentView == 'confirmation'">
          <h3>Registration complete. You will be contacted with more information.</h3>
          <a href="/">Home</a>
+      </div>
+
+      <div v-if="currentView == 'me'">
+         <Me v-bind:accessToken="accessToken" />
+         <div>
+           <button class="nav-item" @click="logout()">Logout</button>
+         </div>
       </div>
       
     </div>
@@ -23,25 +30,49 @@
 
 <script>
 import Register from './components/Register.vue'
+import Me from './components/Me.vue'
 
 export default {
   name: 'App',
   components: {
-    Register
+    Register,
+    Me
   },
   data: () => {
     return {
         currentView: 'home',
-        validRoutes: ['register', 'confirmation']
+        validRoutes: ['register', 'confirmation', 'me'],
+        accessToken: null
     }
   },
   created: function() {
+    this.evaluteAccess()
     this.evaluteHash(false)
     window.addEventListener("hashchange", () => {
       this.evaluteHash(true)
     })
   },
   methods: {
+    evaluteAccess: function() {
+      const accessToken = this.findGetParameter("accessToken") || window.localStorage.accessToken
+      if (accessToken != null) {
+        this.accessToken = accessToken
+        window.localStorage.accessToken = accessToken
+        this.goToLoginHome()
+      }
+    },
+    findGetParameter: function (parameterName) {
+        var result = null,
+            tmp = [];
+        location.search
+            .substr(1)
+            .split("&")
+            .forEach(function (item) {
+              tmp = item.split("=");
+              if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+            });
+        return result;
+    },
     evaluteHash: function(shouldReloadIfNotFound) {
       let route = window.location.hash.replace("#", "")
       if (this.validRoutes.indexOf(route) !== -1) {
@@ -56,9 +87,20 @@ export default {
     goToRegisterConfirmation: function() {
       window.location.hash = "#confirmation"
     },
+    goToLoginHome: function() {
+      window.location.hash = "#me"
+    },
     navigateTo: function(viewName) {
       this.currentView = viewName
-      document.getElementById("intro").remove()
+      let introEl = document.getElementById("intro")
+      if (introEl) {
+        introEl.remove()
+      }
+    },
+    logout: function() {
+      this.accessToken = null
+      delete window.localStorage.accessToken
+      window.location.href = "/"
     }
   }
 }

@@ -46,7 +46,7 @@ a:hover {
   color:coral;
 }
 
-.nav-item.register {
+.nav-item.register, button.nav-item {
   display: inline-block;
   text-decoration: none;
   background-color: #008AC8;
@@ -59,6 +59,10 @@ a:hover {
 }
 .nav-item.register:hover {
   background-color: coral;
+}
+
+button.nav-item {
+  display: block;
 }
 
 div#intro {
@@ -233,6 +237,29 @@ p.details-pro-title {
 
   text-decoration: none;
   color: black;
+}
+
+footer {
+  clear: both;
+}
+
+/* Forms */
+
+label {
+  clear: both;
+  display: block;
+  margin-top: 12pt;
+}
+strong.warning {
+  color: coral;
+}
+
+input, select, label, textarea {
+  font-size: 150%;
+}
+
+textarea {
+  min-width: 300pt;
 }
 
 @media screen and (min-width: 914px) {
