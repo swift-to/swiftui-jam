@@ -31,6 +31,8 @@
             <dd>{{user.address.street2}}</dd>
             <dt>City</dt>
             <dd>{{user.address.city}}</dd>
+            <dt>State</dt>
+            <dd>{{user.address.state}}</dd>
             <dt>Postal Code</dt>
             <dd>{{user.address.postalCode}}</dd>
             <dt>Country</dt>
@@ -56,9 +58,10 @@
           @click="state = 'change-team'"
           v-if="user.type != 'teamCaptain'"
           >👥 Change Team</button>
-        <h5>
-           <a href="https://discord.gg/YBD2Shqgqc">Join Discord Chat</a>
-        </h5>
+
+        <button class="nav-item">
+          <a href="https://discord.gg/YBD2Shqgqc">💬 Join Discord Chat</a>
+        </button>
       </div>
     </div>
 
@@ -74,6 +77,8 @@
          <input type="text" name="street2" id="street2" v-model="user.address.street2">
          <label for="city">City</label>
          <input type="text" name="city" id="city" v-model="user.address.city">
+         <label for="state">State</label>
+         <input type="text" name="state" id="state" v-model="user.address.state">
          <label for="postalCode">Postal Code</label>
          <input type="text" name="postalCode" id="postalCode" v-model="user.address.postalCode">
          <label for="country">Country</label>
@@ -179,6 +184,7 @@ export default {
           street: this.user.address.street,
           street2: this.user.address.street2,
           city: this.user.address.city,
+          state: this.user.address.state,
           postalCode: this.user.address.postalCode,
           country: this.user.address.country
         }

@@ -60,6 +60,9 @@ a:hover {
 .nav-item.register:hover {
   background-color: coral;
 }
+.nav-item a {
+  color: white;
+}
 
 button.nav-item {
   display: block;

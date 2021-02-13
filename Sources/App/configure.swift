@@ -78,11 +78,11 @@ public func addMigrations(_ app: Application) {
     // Address
     app.migrations.add(CreateAddressTableMigration())
     app.migrations.add(AddUserAddressColumn())
-    
+
     //Submissions
     app.migrations.add(CreateSubmissionTableMigration())
     app.migrations.add(CreateSubmissionImageTableMigration())
-    
+
     // User password/registration confirmation
     app.migrations.add(AddUserPasswordAndRegistrationConfirmationColumns())
     

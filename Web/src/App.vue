@@ -18,7 +18,7 @@
       </div>
 
       <div v-if="currentView == 'confirmation'">
-         <h3>Registration complete. You will be contacted with more information.</h3>
+         <h3>Registration complete. You will be contacted soon with more information.</h3>
          <a href="/">Home</a>
       </div>
 

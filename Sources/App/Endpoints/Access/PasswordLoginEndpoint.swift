@@ -23,6 +23,9 @@ struct PasswordLoginEndpoint: APIRoutingEndpoint {
         query: Void,
         body: PasswordLoginBody
     ) throws -> EventLoopFuture<PasswordLoginResponse> {
+        
+        throw Abort(.notImplemented) // needs proper bcrypt setup
+        
         return User.query(on: context.db)
             .filter(\.$email == body.email)
             .first()

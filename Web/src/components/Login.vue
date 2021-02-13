@@ -5,8 +5,8 @@
     <br />Submit your registered email address and we will mail you a link with access for 24 hours.</p>
       
     <label for="name">Email</label>
-    <input type="text" name="name" id="name" v-model="email">
-
+    <input type="email" name="name" id="name" v-model="email">
+    <br /><br />
     <button class="nav-item" type="submit" @click="login()">Submit</button>
   </div>
 </template>

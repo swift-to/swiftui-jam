@@ -3,13 +3,12 @@
     <h1>Register</h1>
     <form>
 
-      <h3 style="color: red">***Registration is now closed for new and randomly assigned teams
-      <br />You can still sign up to join an existing team or as a floating designer
-      <br />Please contact as at hello@swiftuijam.com if you have any questions.***</h3>
+      <h3 style="color: red">***Registration is now closed for randomly assigned teams
+        and new teams can not request design help (We are already short on designers)***</h3>
 
       <label for="registerAs">Register As:</label>
       <select name="registerAs" id="registerAs" v-model="registerAs">
-        <!-- <option value="team-captain">Team Captain/Solo Programmer</option> -->
+        <option value="team-captain">Team Captain/Solo Programmer</option>
         <option value="team-member">Team Member</option>
         <option value="floater">Floating Designer</option>
         <!-- <option value="assigned-programmer">Randomly Assigned Team Programmer</option> -->
@@ -21,15 +20,15 @@
       <label for="email">Email</label>
       <input type="email" name="email" id="email" v-model="formData.email">
 
-      <!-- <div v-if="registerAs == 'team-captain'">
+      <div v-if="registerAs == 'team-captain'">
           <label for="newTeamName">New Team Name</label>
           <input type="text" name="newTeamName" id="newTeamName" v-model="formData.newTeamName">
-          <label for="requiresFloater">Requesting Floating Designer?</label>
+          <!-- <label for="requiresFloater">Requesting Floating Designer?</label>
           <select name="requiresFloater" id="requiresFloater" v-model="formData.requiresFloater">
             <option v-bind:value="true">Yes</option>
             <option v-bind:value="false">No</option>
-          </select>
-      </div> -->
+          </select> -->
+      </div>
 
       <div v-if="registerAs == 'team-member'">
           <label for="existingTeamId">Select the team you are joining</label>
@@ -67,7 +66,7 @@ export default {
   name: 'Register',
   data: () => {
     return {
-      registerAs: 'team-member',
+      registerAs: 'team-captain',
       isProcessing: false,
       teams: [],
       formData: {

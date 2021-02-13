@@ -18,13 +18,18 @@ struct UpdatePasswordEndpoint: APIRoutingEndpoint {
         query: Void,
         body: UpdatePasswordBody
     ) throws -> EventLoopFuture<HTTPStatus> {
-        User.query(on: context.db)
+        
+        throw Abort(.notImplemented) // needs proper bcrypt setup
+        
+        return User.query(on: context.db)
             .with(\.$address)
             .filter(\.$id == context.auth.id)
             .first()
             .unwrap(or: Abort(.notFound))
             .flatMap { user in
-                user.password = body.password
+                //TODO: Bcrypt, dum-dum
+//                user.password = body.password
+                
                 return user.save(on: context.db)
             }
             .map { .ok }
