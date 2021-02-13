@@ -25,7 +25,11 @@ export default {
         if (xhr.status >= 200 && xhr.status < 300) {
           console.log(xhr.response)
           this.$emit('editComplete')
-        } else {
+        } 
+        else if(xhr.status == 401) {
+          this.$emit('unauthorizedResponse')
+        }
+        else {
           alert(xhr.responseText)
         }
       }

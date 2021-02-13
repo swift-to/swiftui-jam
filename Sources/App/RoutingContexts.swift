@@ -58,12 +58,16 @@ struct AuthorizedRoutingContext: APIRoutingContext {
     var s3: S3Manager
     
     static func createFrom(request: Request) throws -> AuthorizedRoutingContext {
-        let authPayload = try request.jwt.verify(as: AuthPayload.self)
-        return .init(
-            eventLoop: request.eventLoop,
-            db: request.db,
-            auth: authPayload,
-            s3: request.s3.manager
-        )
+        do {
+            let authPayload = try request.jwt.verify(as: AuthPayload.self)
+            return .init(
+                eventLoop: request.eventLoop,
+                db: request.db,
+                auth: authPayload,
+                s3: request.s3.manager
+            )
+        } catch {
+            throw Abort(.unauthorized)
+        }
     }
 }

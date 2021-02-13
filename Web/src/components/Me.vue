@@ -98,7 +98,8 @@
         v-bind:user="user" 
         v-bind:state="state" 
         v-bind:accessToken="accessToken"
-        v-on:editComplete="editComplete" />
+        v-on:editComplete="editComplete"
+        v-on:unauthorizedResponse="onUnauthedResponse" />
     </div>
 
     <div v-if="state == 'change-team'">
@@ -106,7 +107,8 @@
         v-bind:user="user" 
         v-bind:state="state" 
         v-bind:accessToken="accessToken"
-        v-on:editComplete="editComplete" />
+        v-on:editComplete="editComplete"
+        v-on:unauthorizedResponse="onUnauthedResponse" />
     </div>
 
   </div>
@@ -154,7 +156,11 @@ export default {
           if (!this.user.address) {
             this.user.address = {}
           }
-        } else {
+        }
+        else if(xhr.status == 401) {
+          this.$emit('unauthorizedResponse')
+        }
+        else {
           alert(xhr.responseText)
         }
       }
@@ -170,7 +176,11 @@ export default {
           console.log(xhr.response)
           this.state = 'home'
           this.loadMeInfo()
-        } else {
+        } 
+        else if(xhr.status == 401) {
+          this.$emit('unauthorizedResponse')
+        }
+        else {
           alert(xhr.responseText)
         }
       }
@@ -189,6 +199,9 @@ export default {
           country: this.user.address.country
         }
       }))
+    },
+    onUnauthedResponse: function() {
+      this.$emit('unauthorizedResponse')
     }
   }
 }

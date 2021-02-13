@@ -23,7 +23,9 @@
       </div>
 
       <div v-if="currentView == 'me'">
-         <Me v-bind:accessToken="accessToken" />
+         <Me 
+           v-bind:accessToken="accessToken"
+           v-on:unauthorizedResponse="goToLogin" />
          <div>
            <button class="nav-item logout" @click="logout()">Logout</button>
          </div>
@@ -96,6 +98,10 @@ export default {
     goToLoggedInHome: function() {
       window.location.hash = "#me"
     },
+    goToLogin: function() {
+      this.clearAuthData()
+      window.location.hash = "#login" 
+    },
     navigateTo: function(viewName) {
       this.currentView = viewName
       let introEl = document.getElementById("intro")
@@ -104,9 +110,12 @@ export default {
       }
     },
     logout: function() {
+      this.clearAuthData()
+      window.location.href = "/"
+    },
+    clearAuthData: function() {
       this.accessToken = null
       delete window.localStorage.accessToken
-      window.location.href = "/"
     }
   }
 }
