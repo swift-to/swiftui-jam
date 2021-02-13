@@ -1,5 +1,6 @@
 @testable import App
 import XCTVapor
+import Fluent
 
 final class RegistrationTests: XCTestCase {
 
@@ -46,9 +47,15 @@ final class RegistrationTests: XCTestCase {
         )
         .wait()
         
-        let user = try User.query(on: app.db).first().unwrap(or: Abort(.badRequest)).wait()
-        let team = try Team.query(on: app.db).first().unwrap(or: Abort(.badRequest)).wait()
-        let userTeam = try UserTeam.query(on: app.db).first().unwrap(or: Abort(.badRequest)).wait()
+        let user = try User.query(on: app.db)
+            .filter(\.$email == "test@t.com")
+            .first().unwrap(or: Abort(.badRequest)).wait()
+        let team = try Team.query(on: app.db)
+            .filter(\.$name == "test team")
+            .first().unwrap(or: Abort(.badRequest)).wait()
+        let userTeam = try UserTeam.query(on: app.db)
+            .filter(\.$team.$id == team.requireID())
+            .first().unwrap(or: Abort(.badRequest)).wait()
         
         XCTAssertEqual(res, .ok)
         
@@ -79,7 +86,9 @@ final class RegistrationTests: XCTestCase {
         .wait()
         
         // Expect
-        let user = try User.query(on: app.db).first().unwrap(or: Abort(.badRequest)).wait()
+        let user = try User.query(on: app.db)
+            .filter(\.$email == "test@t.com")
+            .first().unwrap(or: Abort(.badRequest)).wait()
         let teams = try Team.query(on: app.db).all().wait()
         let userTeams = try UserTeam.query(on: app.db).all().wait()
         
@@ -108,7 +117,9 @@ final class RegistrationTests: XCTestCase {
         .wait()
         
         // Expect
-        let user = try User.query(on: app.db).first().unwrap(or: Abort(.badRequest)).wait()
+        let user = try User.query(on: app.db)
+            .filter(\.$email == "test@t.com")
+            .first().unwrap(or: Abort(.badRequest)).wait()
         let teams = try Team.query(on: app.db).all().wait()
         let userTeams = try UserTeam.query(on: app.db).all().wait()
         
@@ -138,7 +149,9 @@ final class RegistrationTests: XCTestCase {
         )
         .wait()
         
-        let team = try Team.query(on: app.db).first().unwrap(or: Abort(.badRequest)).wait()
+        let team = try Team.query(on: app.db)
+            .filter(\.$name == "test team")
+            .first().unwrap(or: Abort(.badRequest)).wait()
         
         // When
         

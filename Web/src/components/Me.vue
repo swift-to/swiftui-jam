@@ -56,6 +56,9 @@
           @click="state = 'change-team'"
           v-if="user.type != 'teamCaptain'"
           >👥 Change Team</button>
+        <h5>
+           <a href="https://discord.gg/YBD2Shqgqc">Join Discord Chat</a>
+        </h5>
       </div>
     </div>
 

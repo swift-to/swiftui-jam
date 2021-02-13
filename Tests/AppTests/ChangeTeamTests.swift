@@ -135,7 +135,9 @@ final class ChangeTeamTests: XCTestCase {
         )
         .wait()
         
-        let team = try Team.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
+        let team = try Team.query(on: app.db)
+            .filter(\.$name == "team1")
+            .first().unwrap(or: Abort(.notFound)).wait()
                 
         _ = try RegisterAssignedTeamProgrammerEndpoint.run(
             context: context,

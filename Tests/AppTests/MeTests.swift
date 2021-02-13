@@ -1,5 +1,6 @@
 @testable import App
 import XCTVapor
+import Fluent
 
 final class MeTests: XCTestCase {
     
@@ -46,7 +47,9 @@ final class MeTests: XCTestCase {
         )
         .wait()
         
-        let team = try Team.query(on: app.db).first().unwrap(or: Abort(.badRequest)).wait()
+        let team = try Team.query(on: app.db)
+            .filter(\.$name == "test team")
+            .first().unwrap(or: Abort(.badRequest)).wait()
         
         _ = try RegisterTeamMemberEndpoint.run(
             context: context,
@@ -161,7 +164,9 @@ final class MeTests: XCTestCase {
         )
         .wait()
         
-        let user = try User.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
+        let user = try User.query(on: app.db)
+            .filter(\.$email == "test@t.com")
+            .first().unwrap(or: Abort(.notFound)).wait()
         let auth = AuthorizedRoutingContext(
             eventLoop: app.eventLoopGroup.next(),
             db: app.db,
@@ -203,7 +208,9 @@ final class MeTests: XCTestCase {
         )
         .wait()
         
-        let user = try User.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
+        let user = try User.query(on: app.db)
+            .filter(\.$email == "test@t.com")
+            .first().unwrap(or: Abort(.notFound)).wait()
         let auth = AuthorizedRoutingContext(
             eventLoop: app.eventLoopGroup.next(),
             db: app.db,

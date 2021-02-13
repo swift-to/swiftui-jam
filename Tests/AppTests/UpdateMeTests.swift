@@ -45,7 +45,9 @@ final class UpdateMeTests: XCTestCase {
     
     func testUpdateMe_addAddress() throws {
         // Given
-        let user = try User.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
+        let user = try User.query(on: app.db)
+            .filter(\.$email == "float@t.com")
+            .first().unwrap(or: Abort(.notFound)).wait()
 
         // When
         let context = AuthorizedRoutingContext(
@@ -97,7 +99,9 @@ final class UpdateMeTests: XCTestCase {
     
     func testUpdateMe_updateAddress() throws {
         // Given
-        let user = try User.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
+        let user = try User.query(on: app.db)
+            .filter(\.$email == "float@t.com")
+            .first().unwrap(or: Abort(.notFound)).wait()
 
         // When
         let context = AuthorizedRoutingContext(

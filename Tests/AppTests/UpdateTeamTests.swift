@@ -46,10 +46,13 @@ final class UpdateTeamTests: XCTestCase {
     
     func testUpdateTeam() throws {
         // Given
-        let team = try Team.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
-        let user = try User.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
+        let team = try Team.query(on: app.db)
+            .filter(\.$name == "team1")
+            .first().unwrap(or: Abort(.notFound)).wait()
+        let user = try User.query(on: app.db)
+            .filter(\.$email == "test@t.com")
+            .first().unwrap(or: Abort(.notFound)).wait()
         
-        XCTAssertEqual(team.name, "team1")
         XCTAssertEqual(team.requiresFloater, false)
         
         // When
@@ -70,7 +73,9 @@ final class UpdateTeamTests: XCTestCase {
         .wait()
         
         // Expect
-        let updatedTeam = try Team.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
+        let updatedTeam = try Team.query(on: app.db)
+            .filter(\.$name == "Electric Boogaloo")
+            .first().unwrap(or: Abort(.notFound)).wait()
         XCTAssertEqual(res, .ok)
         XCTAssertEqual(updatedTeam.name, "Electric Boogaloo")
     }
@@ -78,7 +83,9 @@ final class UpdateTeamTests: XCTestCase {
     func testUpdateTeam_fromNonCaptain() throws {
         // Given
 
-        let team = try Team.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
+        let team = try Team.query(on: app.db)
+            .filter(\.$name == "team1")
+            .first().unwrap(or: Abort(.notFound)).wait()
 
         _ = try RegisterTeamMemberEndpoint.run(
             context: context,
@@ -115,7 +122,9 @@ final class UpdateTeamTests: XCTestCase {
             XCTAssertEqual((err as? Abort)?.status, .badRequest)
         }
         
-        let updatedTeam = try Team.query(on: app.db).first().unwrap(or: Abort(.notFound)).wait()
+        let updatedTeam = try Team.query(on: app.db)
+            .filter(\.$name == "team1")
+            .first().unwrap(or: Abort(.notFound)).wait()
         XCTAssertEqual(updatedTeam.name, "team1")
         XCTAssertEqual(updatedTeam.requiresFloater, false)
     }

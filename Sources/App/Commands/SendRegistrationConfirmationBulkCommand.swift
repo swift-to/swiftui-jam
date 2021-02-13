@@ -33,8 +33,9 @@ public struct SendRegistrationConfirmationBulkCommand: Command {
                             subject: "Registration Confirmation",
                             message: """
                             This message is to confirm your registration for SwiftUI Jam.
-                            You can now log in to the website to check your registration details.
-                            You can also add a mailing address if you live in Canada or the USA in order to be sent a laptop sticker after the jam.
+                            You can now log in to the website to check your registration details and add a mailing address if you live in Canada or the USA in order to be sent a laptop sticker after the jam.
+
+                            You are also invited to join our Discord Chat for the jam: https://discord.gg/YBD2Shqgqc
 
                             Follow the link below to review your information. Access will expire after 24 hours but you can always request a new login link from the website.
 
