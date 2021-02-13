@@ -10,7 +10,7 @@ struct RegisterAssignedTeamProgrammerRequestBody: Decodable {
     var notes: String?
 }
 
-struct RegisterAssignedTeamProgrammer: APIRoutingEndpoint {
+struct RegisterAssignedTeamProgrammerEndpoint: APIRoutingEndpoint {
     
     static var method: APIRoutingHTTPMethod = .post
     static var path: String = "/register-assigned-programmer"

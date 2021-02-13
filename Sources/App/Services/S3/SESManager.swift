@@ -1,7 +1,12 @@
 import Vapor
 import SotoSESV2
 
-final class SESManager {
+protocol SESManagingService {
+    func sendEmail(to: String, subject: String, message: String) -> EventLoopFuture<Void>
+    func prepareForDeallocation() throws
+}
+
+final class SESManager: SESManagingService {
     
     enum SESError: Error {
         case messageNotUTF8

@@ -165,20 +165,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-label {
-  clear: both;
-  display: block;
-  margin-top: 12pt;
-}
-strong.warning {
-  color: coral;
-}
 
-input, select, label, textarea {
-  font-size: 150%;
-}
-
-textarea {
-  min-width: 300pt;
-}
 </style>

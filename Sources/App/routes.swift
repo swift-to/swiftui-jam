@@ -12,11 +12,18 @@ func routes(_ app: Application) throws {
         RegisterTeamMemberEndpoint.register(in: $0)
         RegisterCaptainEndpoint.register(in: $0)
         RegisterFloaterEndpoint.register(in: $0)
-        RegisterAssignedTeamProgrammer.register(in: $0)
+        RegisterAssignedTeamProgrammerEndpoint.register(in: $0)
         
         GetTeamsEndpoint.register(in: $0)
+        UpdateTeamEndpoint.register(in: $0)
         
-        RequestEmailLoginAccessEndpoint.register(in: $0)
+        EmailLoginEndpoint.register(in: $0)
+//        PasswordLoginEndpoint.register(in: $0)
+        
+        ChangeTeamEndpoint.register(in: $0)
+        GetMeEndpoint.register(in: $0)
+        UpdateMeEndpoint.register(in: $0)
+//        UpdatePasswordEndpoint.register(in: $0)
     }
     
     app.get("docs", "json") { (request) -> JSONString in
@@ -53,53 +60,6 @@ func routes(_ app: Application) throws {
         return html
     }
 }
-
-struct UnauthorizedRoutingContext: APIRoutingContext {
-    var eventLoop: EventLoop
-    var db: FluentKit.Database
-    
-    static func createFrom(request: Request) throws -> UnauthorizedRoutingContext {
-        return .init(
-            eventLoop: request.eventLoop,
-            db: request.db
-        )
-    }
-}
-
-struct AccessManagementContext: APIRoutingContext {
-    
-    var eventLoop: EventLoop
-    var db: FluentKit.Database
-    var jwt: JWTContext
-    var ses: SESManager
-    
-    static func createFrom(request: Request) throws -> AccessManagementContext {
-        return .init(
-            eventLoop: request.eventLoop,
-            db: request.db,
-            jwt: request.jwt,
-            ses: request.ses.manager
-        )
-    }
-}
-
-protocol JWTContext {
-    func verify<Payload>(as payload: Payload.Type) throws -> Payload
-        where Payload: JWTPayload
-
-
-    func verify<Payload>(_ message: String, as payload: Payload.Type) throws -> Payload
-        where Payload: JWTPayload
-
-
-    func verify<Message, Payload>(_ message: Message, as payload: Payload.Type) throws -> Payload
-        where Message: DataProtocol, Payload: JWTPayload
-
-    func sign<Payload>(_ jwt: Payload, kid: JWKIdentifier?) throws -> String
-        where Payload: JWTPayload
-}
-
-extension Request.JWT: JWTContext {}
 
 public func generateAPIDocs() throws -> String {
     let filePath = #file

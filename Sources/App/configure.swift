@@ -21,20 +21,6 @@ public func configure(_ app: Application) throws {
         )
     )
     
-    let accessKey = try Environment.getByKeyThrowing(.awsAccessKeyId)
-    let secretKey = try Environment.getByKeyThrowing(.awsSecretAccessKey)
-    app.s3.manager = S3Manager(
-        accessKeyId: accessKey,
-        secretAccessKey: secretKey,
-        region: .useast1
-    )
-    
-    let extractedExpr = SESManager(
-        accessKeyId: accessKey,
-        secretAccessKey: secretKey
-    )
-    app.ses.manager = extractedExpr
-    
     if app.environment == .production {
         guard var config: PostgresConfiguration = PostgresConfiguration(
             url: try Environment.getByKeyThrowing(.dbUrl)
@@ -54,10 +40,9 @@ public func configure(_ app: Application) throws {
         ), as: .psql)
     }
     
-    app.migrations.add(CreateUserTableMigration())
-    app.migrations.add(CreateTeamTableMigration())
-    app.migrations.add(CreateUserTeamTableMigration())
-    app.migrations.add(AddRandomAssignmentColumn())
+    try setUpAWSManagers(app)
+    addMigrations(app)
+    addCommands(app)
     
     #if DEBUG
 //    try app.autoRevert().wait()
@@ -65,4 +50,44 @@ public func configure(_ app: Application) throws {
     try app.autoMigrate().wait()
     
     try routes(app)
+}
+
+public func setUpAWSManagers(_ app: Application) throws {
+    
+    let accessKey = try Environment.getByKeyThrowing(.awsAccessKeyId)
+    let secretKey = try Environment.getByKeyThrowing(.awsSecretAccessKey)
+    
+    app.s3.manager = S3Manager(
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey,
+        region: .useast1
+    )
+    
+    app.ses.manager = SESManager(
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey
+    )
+}
+
+public func addMigrations(_ app: Application) {
+    app.migrations.add(CreateUserTableMigration())
+    app.migrations.add(CreateTeamTableMigration())
+    app.migrations.add(CreateUserTeamTableMigration())
+    app.migrations.add(AddRandomAssignmentColumn())
+    
+    // Address
+    app.migrations.add(CreateAddressTableMigration())
+    app.migrations.add(AddUserAddressColumn())
+
+    //Submissions
+    app.migrations.add(CreateSubmissionTableMigration())
+    app.migrations.add(CreateSubmissionImageTableMigration())
+
+    // User password/registration confirmation
+    app.migrations.add(AddUserPasswordAndRegistrationConfirmationColumns())
+    
+}
+
+public func addCommands(_ app: Application) {
+    app.commands.use(SendRegistrationConfirmationBulkCommand(), as: "send-registration-email-bulk", isDefault: false)
 }
