@@ -3,15 +3,14 @@
     <h1>Register</h1>
     <form>
 
-      <h3 style="color: red">***Registration is now closed for randomly assigned teams
-        and new teams can not request design help (We are already short on designers)***</h3>
+      <h3 style="color: red">***Registration is now closed***</h3>
 
-      <label for="registerAs">Register As:</label>
+      <!-- <label for="registerAs">Register As:</label>
       <select name="registerAs" id="registerAs" v-model="registerAs">
         <option value="team-captain">Team Captain/Solo Programmer</option>
         <option value="team-member">Team Member</option>
         <option value="floater">Floating Designer</option>
-        <!-- <option value="assigned-programmer">Randomly Assigned Team Programmer</option> -->
+        <option value="assigned-programmer">Randomly Assigned Team Programmer</option>
       </select>
 
       <label for="name">Name</label>
@@ -23,11 +22,11 @@
       <div v-if="registerAs == 'team-captain'">
           <label for="newTeamName">New Team Name</label>
           <input type="text" name="newTeamName" id="newTeamName" v-model="formData.newTeamName">
-          <!-- <label for="requiresFloater">Requesting Floating Designer?</label>
+          <label for="requiresFloater">Requesting Floating Designer?</label>
           <select name="requiresFloater" id="requiresFloater" v-model="formData.requiresFloater">
             <option v-bind:value="true">Yes</option>
             <option v-bind:value="false">No</option>
-          </select> -->
+          </select>
       </div>
 
       <div v-if="registerAs == 'team-member'">
@@ -37,13 +36,13 @@
           </select>
       </div>
 
-      <!-- <div v-if="registerAs == 'assigned-programmer'">
+      <div v-if="registerAs == 'assigned-programmer'">
         <label for="notes">Tell us about yourself.
           <br />What is your skill level?
           <br />What would you like to accomplish during the jam?
         </label>
         <textarea name="notes" id="notes" v-model="formData.notes"></textarea>
-      </div> -->
+      </div>
 
       <br/><br/>
 
@@ -55,7 +54,7 @@
 
       <div v-if="isProcessing">
         <strong>Processing...</strong>
-      </div>
+      </div> -->
 
     </form>
   </div>
