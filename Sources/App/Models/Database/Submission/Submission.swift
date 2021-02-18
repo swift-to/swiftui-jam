@@ -16,8 +16,11 @@ final class Submission: Model {
     @Field(key: "description")
     var description: String
     
-    @Field(key: "repoUrl")
-    var repoUrl: String
+    @OptionalField(key: "repoUrl")
+    var repoUrl: String?
+    
+    @OptionalField(key: "downloadUrl")
+    var downloadUrl: String?
     
     @Children(for: \.$submission)
     var images: [SubmissionImage]
@@ -32,14 +35,24 @@ struct SubmissionViewModel: Codable, Content {
     var name: String
     var description: String
     var team: TeamDetailsViewModel
+    var images: [SubmissionImageViewModel]?
 }
 
 extension SubmissionViewModel {
-    init(_ submission: Submission, team: Team) throws {
-        self.id = try submission.requireID()
-        self.team = try TeamDetailsViewModel(team)
+    
+    init(_ submission: Submission) throws {
         
-        self.name = submission.name
-        self.description = submission.description
+        let vm = try SubmissionViewModel(
+            id: submission.requireID(),
+            name: submission.name,
+            description:submission.description,
+            team: TeamDetailsViewModel(submission.team),
+            images: submission.images
+                .filter { !$0.isPending }
+                .map { try SubmissionImageViewModel($0) }
+        )
+        
+        self = vm
     }
+    
 }

@@ -22,3 +22,27 @@ final class SubmissionImage: Model {
     }
     
 }
+
+struct SubmissionImageViewModel: Codable, Content {
+
+    var id: UUID
+    var url: String
+
+    init(
+        id: UUID,
+        url: String
+    ) {
+        self.id = id
+        self.url = url
+    }
+    
+}
+
+extension SubmissionImageViewModel {
+    init(_ submissionImage: SubmissionImage) throws {
+        self = SubmissionImageViewModel(
+            id: try submissionImage.requireID(),
+            url: submissionImage.url
+        )
+    }
+}

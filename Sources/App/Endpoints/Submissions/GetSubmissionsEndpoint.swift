@@ -1,8 +1,9 @@
 import Foundation
 import Vapor
 import APIRouting
+import Fluent
 
-struct GetSubmissions: APIRoutingEndpoint {
+struct GetSubmissionsEndpoint: APIRoutingEndpoint {
     
     static var method: APIRoutingHTTPMethod = .get
     static var path: String = "/submissions"
@@ -12,11 +13,11 @@ struct GetSubmissions: APIRoutingEndpoint {
         parameters: Void,
         query: Void,
         body: Void
-    ) throws -> EventLoopFuture<[TeamDetailsViewModel]> {
-        Team.query(on: context.db)
-            .with(\.$captain)
-            .with(\.$members)
+    ) throws -> EventLoopFuture<[SubmissionViewModel]> {
+        Submission.query(on: context.db)
+            .with(\.$team)
+            .with(\.$images)
             .all()
-            .flatMapThrowing { try $0.map(TeamDetailsViewModel.init) }
+            .flatMapThrowing { try $0.map(SubmissionViewModel.init) }
     }
 }

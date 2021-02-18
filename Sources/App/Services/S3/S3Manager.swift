@@ -9,7 +9,7 @@ struct S3FileUploadRequest: Codable {
     var mimeType: String
 }
 
-struct S3FilePublicizeRequest: Codable {
+struct S3FileModificationRequestDetails: Codable {
     var bucket: String
     var fileName: String
 }
@@ -62,13 +62,20 @@ final class S3Manager {
         )
     }
     
-    func makeObjectPublic(requestInfo: S3FilePublicizeRequest) -> EventLoopFuture<Void> {
+    func makeObjectPublic(requestInfo: S3FileModificationRequestDetails) -> EventLoopFuture<Void> {
         s3.putObjectAcl(.init(acl: .publicRead, bucket: requestInfo.bucket, key: requestInfo.fileName))
             .flatMapErrorThrowing({ (error) -> S3.PutObjectAclOutput in
                 throw error
             })
-            .map { _ in ()
-        }
+            .map { _ in () }
+    }
+    
+    func deleteObject(requestInfo: S3FileModificationRequestDetails) -> EventLoopFuture<Void> {
+        s3.deleteObject(.init(bucket: requestInfo.bucket, key: requestInfo.fileName))
+            .flatMapErrorThrowing({ (error) -> S3.DeleteObjectOutput in
+                throw error
+            })
+            .map { _ in () }
     }
     
 }
