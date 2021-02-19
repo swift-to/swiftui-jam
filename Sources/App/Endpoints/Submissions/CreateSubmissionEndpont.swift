@@ -25,7 +25,6 @@ struct CreateSubmissionEndpoint: APIRoutingEndpoint {
         query: Void,
         body: CreateSubmissionBody
     ) throws -> EventLoopFuture<SubmissionViewModel> {
-        
         User.query(on: context.db)
             .filter(\.$id == context.auth.id)
             .with(\.$teams)
@@ -48,14 +47,25 @@ struct CreateSubmissionEndpoint: APIRoutingEndpoint {
                     }
                     .flatMap {
                         let submission = Submission()
-                        submission.team = team
+                        submission.$team.id = teamId
                         submission.name = body.name
                         submission.description = body.description
                         submission.repoUrl = body.repoUrl
                         submission.downloadUrl = body.downloadUrl
-                        submission.images = []
                         
                         return submission.create(on: context.db)
+                            .flatMap {
+                                context.eventLoop.flatten([
+                                    submission.$team.load(on: context.db),
+                                    submission.$images.load(on: context.db),
+                                ])
+                            }
+                            .flatMap { _ in
+                                context.eventLoop.flatten([
+                                    submission.team.$captain.load(on: context.db),
+                                    submission.team.$members.load(on: context.db)
+                                ])
+                            }
                             .flatMapThrowing { try SubmissionViewModel(submission) }
                     }
                     

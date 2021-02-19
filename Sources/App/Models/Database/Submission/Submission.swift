@@ -30,12 +30,14 @@ final class Submission: Model {
     }
 }
 
-struct SubmissionViewModel: Codable, Content {
+struct SubmissionViewModel: Equatable, Codable, Content {
     var id: UUID
     var name: String
     var description: String
+    var repoUrl: String?
+    var downloadUrl: String?
     var team: TeamDetailsViewModel
-    var images: [SubmissionImageViewModel]?
+    var images: [SubmissionImageViewModel]
 }
 
 extension SubmissionViewModel {
@@ -45,7 +47,9 @@ extension SubmissionViewModel {
         let vm = try SubmissionViewModel(
             id: submission.requireID(),
             name: submission.name,
-            description:submission.description,
+            description: submission.description,
+            repoUrl: submission.repoUrl,
+            downloadUrl: submission.downloadUrl,
             team: TeamDetailsViewModel(submission.team),
             images: submission.images
                 .filter { !$0.isPending }

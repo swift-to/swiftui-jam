@@ -73,18 +73,21 @@ public func addMigrations(_ app: Application) {
     app.migrations.add(CreateUserTableMigration())
     app.migrations.add(CreateTeamTableMigration())
     app.migrations.add(CreateUserTeamTableMigration())
-    app.migrations.add(AddRandomAssignmentColumn())
+    app.migrations.add(AddRandomAssignmentColumnMigration())
     
     // Address
     app.migrations.add(CreateAddressTableMigration())
-    app.migrations.add(AddUserAddressColumn())
+    app.migrations.add(AddUserAddressColumnMigration())
 
     //Submissions
     app.migrations.add(CreateSubmissionTableMigration())
     app.migrations.add(CreateSubmissionImageTableMigration())
 
     // User password/registration confirmation
-    app.migrations.add(AddUserPasswordAndRegistrationConfirmationColumns())
+    app.migrations.add(AddUserPasswordAndRegistrationConfirmationColumnsMigration())
+    
+    // Submission adjustments
+    app.migrations.add(UpdateSubmissionColumnsMigration())
     
 }
 

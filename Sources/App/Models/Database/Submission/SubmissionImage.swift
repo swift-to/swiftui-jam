@@ -23,7 +23,7 @@ final class SubmissionImage: Model {
     
 }
 
-struct SubmissionImageViewModel: Codable, Content {
+struct SubmissionImageViewModel: Equatable, Codable, Content {
 
     var id: UUID
     var url: String

@@ -21,7 +21,10 @@ struct GetSubmissionByIdEndpoint: APIRoutingEndpoint {
         let submissionId = try parameters.getUUID()
         return Submission.query(on: context.db)
             .filter(\.$id == submissionId)
-            .with(\.$team)
+            .with(\.$team) {
+                $0.with(\.$captain)
+                $0.with(\.$members)
+            }
             .with(\.$images)
             .first()
             .unwrap(or: Abort(.notFound))

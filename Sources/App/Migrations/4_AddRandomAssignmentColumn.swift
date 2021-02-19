@@ -1,7 +1,7 @@
 import Fluent
 import FluentPostgresDriver
 
-public struct AddRandomAssignmentColumn: Migration {
+public struct AddRandomAssignmentColumnMigration: Migration {
     
     enum MigrationError: Error {
         case dbNotPostgres
