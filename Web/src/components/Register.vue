@@ -5,12 +5,12 @@
 
       <h3 style="color: red">***Registration is now closed***</h3>
 
-      <!-- <label for="registerAs">Register As:</label>
+      <label for="registerAs">Register As:</label>
       <select name="registerAs" id="registerAs" v-model="registerAs">
-        <option value="team-captain">Team Captain/Solo Programmer</option>
-        <option value="team-member">Team Member</option>
-        <option value="floater">Floating Designer</option>
-        <option value="assigned-programmer">Randomly Assigned Team Programmer</option>
+        <option value="team-captain">Solo Programmer</option>
+        <!-- <option value="team-member">Team Member</option> -->
+        <!-- <option value="floater">Floating Designer</option> -->
+        <!-- <option value="assigned-programmer">Randomly Assigned Team Programmer</option> -->
       </select>
 
       <label for="name">Name</label>
@@ -54,7 +54,7 @@
 
       <div v-if="isProcessing">
         <strong>Processing...</strong>
-      </div> -->
+      </div>
 
     </form>
   </div>
