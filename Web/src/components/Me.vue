@@ -53,6 +53,13 @@
           @click="state = 'edit-team-name'"
           v-if="user.type == 'teamCaptain'"
           >🆔 Change Team Name</button>
+
+        <button 
+          class="nav-item" 
+          @click="state = 'submit'"
+          v-if="user.type == 'teamCaptain'"
+          >⏫ Submit your App</button>
+
         <button 
           class="nav-item" 
           @click="state = 'change-team'"
@@ -96,7 +103,6 @@
     <div v-if="state == 'edit-team-name'">
       <EditTeamName 
         v-bind:user="user" 
-        v-bind:state="state" 
         v-bind:accessToken="accessToken"
         v-on:editComplete="editComplete"
         v-on:unauthorizedResponse="onUnauthedResponse" />
@@ -105,7 +111,13 @@
     <div v-if="state == 'change-team'">
       <ChangeTeam 
         v-bind:user="user" 
-        v-bind:state="state" 
+        v-bind:accessToken="accessToken"
+        v-on:editComplete="editComplete"
+        v-on:unauthorizedResponse="onUnauthedResponse" />
+    </div>
+
+    <div v-if="state == 'submit'">
+      <Submit 
         v-bind:accessToken="accessToken"
         v-on:editComplete="editComplete"
         v-on:unauthorizedResponse="onUnauthedResponse" />
@@ -117,12 +129,14 @@
 <script>
 import EditTeamName from './EditTeamName.vue'
 import ChangeTeam from './ChangeTeam.vue'
+import Submit from './Submit.vue'
 
 export default {
   name: 'Me',
   components: {
     EditTeamName,
-    ChangeTeam
+    ChangeTeam,
+    Submit
   },
   props: ['accessToken'],
   data: () => {

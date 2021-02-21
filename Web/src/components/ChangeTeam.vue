@@ -11,7 +11,7 @@
 <script>
 export default {
   name: 'ChangeTeam',
-  props: ['accessToken', 'state', 'user'],
+  props: ['accessToken', 'user'],
   data: () => {
     return { 
       teams: [],

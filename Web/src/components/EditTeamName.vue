@@ -9,7 +9,7 @@
 <script>
 export default {
   name: 'EditTeamName',
-  props: ['accessToken', 'state', 'user'],
+  props: ['accessToken', 'user'],
   data: () => {
     return { 
       teamName: ""
