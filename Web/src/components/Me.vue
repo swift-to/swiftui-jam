@@ -39,6 +39,28 @@
             <dd>{{user.address.country}}</dd>
           </dl>
         </div>
+
+        <div v-if="submission != null">
+          <h3>Submission</h3>
+          <dl>
+
+            <dt>App Name</dt>
+            <dd>{{submission.name}}</dd>
+            <dt>Description</dt>
+            <dd>{{submission.description}}</dd>
+            <dt>Git Repo URL</dt>
+            <dd>{{submission.repoUrl}}</dd>
+            <dt>Download URL</dt>
+            <dd>{{submission.downloadUrl}}</dd>
+            <dt>Blog URL</dt>
+            <dd>{{submission.blogUrl}}</dd>
+            <dt>Credits</dt>
+            <dd>{{submission.credits}}</dd>
+            <dt>Images</dt>
+            <dd>Count: {{submission.images.count}}</dd>
+
+          </dl>
+        </div>
       </div>
 
       <div class="actions">
@@ -57,8 +79,14 @@
         <button 
           class="nav-item" 
           @click="state = 'submit'"
-          v-if="user.type == 'teamCaptain'"
+          v-if="user.type == 'teamCaptain' && submission == null"
           >⏫ Submit your App</button>
+
+        <button 
+          class="nav-item" 
+          @click="state = 'update-submission'"
+          v-if="user.type == 'teamCaptain' && submission == null"
+          >🔼 Update your Submission</button>
 
         <button 
           class="nav-item" 
@@ -148,18 +176,21 @@ export default {
         type: "", 
         team: null,
         address: { }
-      }
+      },
+      submission: null
     }
   },
   created: function() {
     console.log('my access token', this.accessToken)
     this.loadMeInfo()
+    this.loadSubmissionInfo()
   },
   computed: {},
   methods: {
     editComplete: function() {
       this.state = 'home'
       this.loadMeInfo()
+      this.loadSubmissionInfo()
     },
     loadMeInfo: function() {
       var xhr = new XMLHttpRequest();
@@ -213,6 +244,21 @@ export default {
           country: this.user.address.country
         }
       }))
+    },
+    loadSubmissionInfo: function() {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          console.log(xhr.response)
+          this.submission = JSON.parse(xhr.responseText)
+        }
+        else if(xhr.status == 401) {
+          this.$emit('unauthorizedResponse')
+        }
+      }
+      xhr.open('GET', process.env.VUE_APP_BASE_API_URL + '/api/me/submission')
+      xhr.setRequestHeader("Authorization", `Bearer ${this.accessToken}`)
+      xhr.send()
     },
     onUnauthedResponse: function() {
       this.$emit('unauthorizedResponse')

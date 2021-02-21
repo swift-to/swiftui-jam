@@ -35,6 +35,9 @@
 
 <script>
 
+import CryptoJS from 'crypto-js'
+import ImageUploadFlowManager from '../ImageUploadFlowManager'
+
 export default {
   name: 'Submit',
   props: ['accessToken'],
@@ -48,7 +51,9 @@ export default {
         blogUrl: "",
         tags: "",
         credits: ""
-      }
+      },
+      fileInfo: null,
+      file: null
     }
   },
   created: function() {
@@ -58,13 +63,47 @@ export default {
   methods: {
     imageSelectionChanged: function (event) {
         console.log("image selection change", event.target.files)
+
+        if (event.target.files.length == 0) { 
+          return 
+        }
+
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = (event) => {
+          var binary = event.target.result;
+          var md5 = CryptoJS.MD5(binary).toString();
+          const info = {
+            md5Hash: md5,
+            bytes: file.size,
+            mimeType: file.type
+          }
+
+          this.file = file
+          this.fileInfo = info
+        };
+
+        reader.readAsBinaryString(file);
     },
     submit: function() {
       var xhr = new XMLHttpRequest();
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
           console.log(xhr.response)
-          this.$emit('editComplete')
+          let submission = JSON.parse(xhr.responseText)
+          if (this.file != null && this.fileInfo != null) {
+            let imageFlowManager = new ImageUploadFlowManager(this.accessToken, submission.id, this.file, this.fileInfo)
+            imageFlowManager.startFlow((error) => {
+                if (error == 401) {
+                  this.$emit('unauthorizedResponse') 
+                } else {
+                  this.$emit('editComplete') 
+                }
+            })
+          } else {
+            this.$emit('editComplete')
+          }
         } 
         else if(xhr.status == 401) {
           this.$emit('unauthorizedResponse')

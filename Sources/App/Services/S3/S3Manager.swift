@@ -54,7 +54,7 @@ final class S3Manager {
             url: URL(string: "https://\(requestInfo.bucket).s3.amazonaws.com/\(requestInfo.fileName)")!,
             httpMethod: .PUT,
             headers: HTTPHeaders([
-                ("Content-MD5", requestInfo.md5Hash),
+//                ("Content-MD5", requestInfo.md5Hash),
                 ("Content-Type", requestInfo.mimeType),
                 ("Content-Length", String(requestInfo.bytesCount))
             ]),

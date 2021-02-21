@@ -24,6 +24,16 @@ func routes(_ app: Application) throws {
         GetMeEndpoint.register(in: $0)
         UpdateMeEndpoint.register(in: $0)
 //        UpdatePasswordEndpoint.register(in: $0)
+        
+        CreateSubmissionEndpoint.register(in: $0)
+        GetSubmissionByIdEndpoint.register(in: $0)
+        GetSubmissionsEndpoint.register(in: $0)
+        UpdateSubmissionEndpoint.register(in: $0)
+        GetMySubmissionEndpoint.register(in: $0)
+        
+        PrepareSubmissionImageUploadEndpoint.register(in: $0)
+        ConfirmSubmissionImageUploadEndpoint.register(in: $0)
+        DeleteSubmissionImageEndpoint.register(in: $0)
     }
     
     app.get("docs", "json") { (request) -> JSONString in
