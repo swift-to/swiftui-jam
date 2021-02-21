@@ -1,7 +1,7 @@
 import Fluent
 import FluentPostgresDriver
 
-public struct AddUserPasswordAndRegistrationConfirmationColumnsMigration: Migration {
+public struct AddUserPasswordAndRegistrationConfirmationColumns: Migration {
     
     public init() { }
     

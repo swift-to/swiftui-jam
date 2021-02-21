@@ -1,7 +1,7 @@
 import Fluent
 import FluentPostgresDriver
 
-public struct AddUserAddressColumnMigration: Migration {
+public struct AddUserAddressColumn: Migration {
     
     public init() { }
     

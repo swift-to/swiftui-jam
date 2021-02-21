@@ -19,15 +19,7 @@ struct GetSubmissionByIdEndpoint: APIRoutingEndpoint {
         body: Void
     ) throws -> EventLoopFuture<SubmissionViewModel> {
         let submissionId = try parameters.getUUID()
-        return Submission.query(on: context.db)
-            .filter(\.$id == submissionId)
-            .with(\.$team) {
-                $0.with(\.$captain)
-                $0.with(\.$members)
-            }
-            .with(\.$images)
-            .first()
-            .unwrap(or: Abort(.notFound))
+        return Submission.deepFindById(submissionId, on: context.db)
             .flatMapThrowing { try SubmissionViewModel($0) }
     }
 }

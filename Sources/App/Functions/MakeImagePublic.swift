@@ -22,3 +22,25 @@ func makeImagePublic(
             )
         )
 }
+
+func deleteImage(
+    fullUrl: String,
+    context: AuthorizedRoutingContext
+) -> EventLoopFuture<Void> {
+    
+    guard let fullUrlComponents = URLComponents(string: fullUrl),
+          let bucket = fullUrlComponents.host?.split(separator: ".").first
+    else {
+        return context.eventLoop.makeFailedFuture(Abort(.internalServerError))
+    }
+    
+    let fullFileName = fullUrlComponents.path.replacingOccurrences(of: "/", with: "")
+    
+    return context.s3
+        .deleteObject(
+            requestInfo: .init(
+                bucket: String(bucket),
+                fileName: fullFileName
+            )
+        )
+}

@@ -7,6 +7,9 @@ struct CreateSubmissionBody: Decodable {
     var description: String
     var repoUrl: String?
     var downloadUrl: String?
+    var blogUrl: String?
+    var tags: String?
+    var credits: String?
 }
 
 struct CreateSubmissionEndpoint: APIRoutingEndpoint {
@@ -52,21 +55,18 @@ struct CreateSubmissionEndpoint: APIRoutingEndpoint {
                         submission.description = body.description
                         submission.repoUrl = body.repoUrl
                         submission.downloadUrl = body.downloadUrl
+                        submission.blogUrl = body.blogUrl
+                        submission.tags = body.tags
+                        submission.credits = body.credits
                         
                         return submission.create(on: context.db)
-                            .flatMap {
-                                context.eventLoop.flatten([
-                                    submission.$team.load(on: context.db),
-                                    submission.$images.load(on: context.db),
-                                ])
+                            .flatMap { _ -> EventLoopFuture<Submission> in
+                                guard let id = submission.id else {
+                                    return context.eventLoop.makeFailedFuture(Abort(.internalServerError))
+                                }
+                                return Submission.deepFindById(id, on: context.db)
                             }
-                            .flatMap { _ in
-                                context.eventLoop.flatten([
-                                    submission.team.$captain.load(on: context.db),
-                                    submission.team.$members.load(on: context.db)
-                                ])
-                            }
-                            .flatMapThrowing { try SubmissionViewModel(submission) }
+                            .flatMapThrowing { try SubmissionViewModel($0) }
                     }
                     
             }

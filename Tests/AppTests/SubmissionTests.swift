@@ -5,7 +5,9 @@ import Fluent
 final class SubmissionTests: XCTestCase {
 
     static var allTests = [
-        ("testCreateSubmission", testCreateSubmission)
+        ("testCreateSubmission", testCreateSubmission),
+        ("testCreateSubmission_duplicateFails", testCreateSubmission_duplicateFails),
+        ("testSubmissionUpdate", testSubmissionUpdate)
     ]
 
     var app: Application = {
@@ -72,7 +74,10 @@ final class SubmissionTests: XCTestCase {
                 name: "mysub",
                 description: "asub",
                 repoUrl: "abc123",
-                downloadUrl: "321cba"
+                downloadUrl: "321cba",
+                blogUrl: "blogabba",
+                tags: "1,2,3",
+                credits: "credited"
             )
         ).wait()
         
@@ -89,6 +94,9 @@ final class SubmissionTests: XCTestCase {
             description: "asub",
             repoUrl: "abc123",
             downloadUrl: "321cba",
+            blogUrl: "blogabba",
+            tags: "1,2,3",
+            credits: "credited",
             team: try TeamDetailsViewModel(team),
             images: []
         ))
@@ -122,6 +130,62 @@ final class SubmissionTests: XCTestCase {
         ).wait()) { error in
             XCTAssertEqual(error as?  CreateSubmissionEndpoint.CreateSubmissionError, .submissionAlreadyExists)
         }
+    }
+    
+    func testSubmissionUpdate() throws {
+        // Given
+        let team = try Team.query(on: app.db)
+            .with(\.$captain)
+            .with(\.$members)
+            .filter(\.$name == "team1")
+            .first().unwrap(or: Abort(.notFound)).wait()
+        
+        // When
+        let submissionResponse = try CreateSubmissionEndpoint.run(
+            context: authedContext,
+            parameters: (),
+            query: (),
+            body: .init(
+                name: "mysub",
+                description: "asub",
+                repoUrl: "abc123",
+                downloadUrl: "321cba"
+            )
+        ).wait()
+        
+        // When
+        let updateResponse = try UpdateSubmissionEndpoint.run(
+            context: authedContext,
+            parameters: .init(id: submissionResponse.id.uuidString),
+            query: (),
+            body: .init(
+                name: "thes ub",
+                description: "blashsh",
+                repoUrl: "repostuff",
+                downloadUrl: "downloado",
+                blogUrl: "blag",
+                tags: "3,2,1",
+                credits: "acred"
+            )
+        ).wait()
+        
+        XCTAssertEqual(updateResponse, .ok)
+        
+        // Expect
+        let sub = try Submission.deepFindById(submissionResponse.id, on: app.db).wait()
+        
+        XCTAssertEqual(try SubmissionViewModel(sub), SubmissionViewModel(
+            id: submissionResponse.id,
+            name: "thes ub",
+            description: "blashsh",
+            repoUrl: "repostuff",
+            downloadUrl: "downloado",
+            blogUrl: "blag",
+            tags: "3,2,1",
+            credits: "acred",
+            team: try TeamDetailsViewModel(team),
+            images: []
+        ))
     }
     
 }

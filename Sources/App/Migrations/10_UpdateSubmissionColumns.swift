@@ -8,7 +8,12 @@ public struct UpdateSubmissionColumnsMigration: Migration {
     public func prepare(on database: Database) -> EventLoopFuture<Void> {
         return database
             .schema("submissions")
+            
             .field("downloadUrl", .string)
+            .field("tags", .string)
+            .field("blogUrl", .string)
+            .field("credits", .string)
+            
             .deleteField("repoUrl") // original column had required constraint which is wrong
             .update()
             .flatMap {
@@ -23,6 +28,9 @@ public struct UpdateSubmissionColumnsMigration: Migration {
         return database
             .schema("submissions")
             .deleteField("downloadUrl")
+            .deleteField("tags")
+            .deleteField("blogUrl")
+            .deleteField("credits")
             .update()
     }
 }

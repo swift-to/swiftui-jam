@@ -8,7 +8,6 @@ struct SubmissionImageUploadParams: Decodable, UUIDExtractable {
 }
 
 struct UploadSubmissionImageBody: Decodable {
-    var thumbnailInfo: FileUploadInfo
     var info: FileUploadInfo
 }
 
@@ -44,7 +43,7 @@ struct PrepareSubmissionImageUploadEndpoint: APIRoutingEndpoint {
             submissionImage.$submission.id = submissionId
             
             return context.s3.createSignedURLForPutOperation(
-                fileUploadInfo: body.thumbnailInfo,
+                fileUploadInfo: body.info,
                 bucket: bucket
             )
             .flatMap { url -> EventLoopFuture<PendingImageUploadResponse> in
