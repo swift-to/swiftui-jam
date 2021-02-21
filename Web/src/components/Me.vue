@@ -57,7 +57,7 @@
             <dt>Credits</dt>
             <dd>{{submission.credits}}</dd>
             <dt>Images</dt>
-            <dd>Count: {{submission.images.count}}</dd>
+            <dd>Count: {{submission.images.length}}</dd>
 
           </dl>
         </div>
@@ -70,11 +70,28 @@
           @click="state = 'edit'"
           >📝 Update Personal Info</button>
         <!-- <button class="nav-item">🤫 Create/Update Password</button> -->
+        
+        <br />
+
         <button 
           class="nav-item" 
           @click="state = 'edit-team-name'"
           v-if="user.type == 'teamCaptain'"
           >🆔 Change Team Name</button>
+
+        <button 
+          class="nav-item" 
+          @click="state = 'change-team'"
+          v-if="user.type != 'teamCaptain'"
+          >👥 Change Team</button>
+
+        <br />
+      
+        <button class="nav-item">
+          <a href="https://discord.gg/YBD2Shqgqc">💬 Join Discord Chat</a>
+        </button>
+
+        <br />
 
         <button 
           class="nav-item" 
@@ -85,18 +102,8 @@
         <button 
           class="nav-item" 
           @click="state = 'update-submission'"
-          v-if="user.type == 'teamCaptain' && submission == null"
+          v-if="user.type == 'teamCaptain' && submission != null"
           >🔼 Update your Submission</button>
-
-        <button 
-          class="nav-item" 
-          @click="state = 'change-team'"
-          v-if="user.type != 'teamCaptain'"
-          >👥 Change Team</button>
-
-        <button class="nav-item">
-          <a href="https://discord.gg/YBD2Shqgqc">💬 Join Discord Chat</a>
-        </button>
       </div>
     </div>
 
@@ -147,6 +154,15 @@
     <div v-if="state == 'submit'">
       <Submit 
         v-bind:accessToken="accessToken"
+        v-on:newSubmissionCreated="newSubmissionCreated"
+        v-on:unauthorizedResponse="onUnauthedResponse" />
+    </div>
+
+    <div v-if="state == 'update-submission'">
+      <UpdateSubmission 
+        v-bind:accessToken="accessToken"
+        v-bind:submission="submission"
+        v-on:submissionNeedsReload="loadSubmissionInfo"
         v-on:editComplete="editComplete"
         v-on:unauthorizedResponse="onUnauthedResponse" />
     </div>
@@ -158,13 +174,15 @@
 import EditTeamName from './EditTeamName.vue'
 import ChangeTeam from './ChangeTeam.vue'
 import Submit from './Submit.vue'
+import UpdateSubmission from './UpdateSubmission.vue'
 
 export default {
   name: 'Me',
   components: {
     EditTeamName,
     ChangeTeam,
-    Submit
+    Submit,
+    UpdateSubmission
   },
   props: ['accessToken'],
   data: () => {
@@ -187,6 +205,11 @@ export default {
   },
   computed: {},
   methods: {
+    newSubmissionCreated: function () {
+      this.loadSubmissionInfo(() => {
+        this.state = "update-submission"
+      })
+    },
     editComplete: function() {
       this.state = 'home'
       this.loadMeInfo()
@@ -245,12 +268,15 @@ export default {
         }
       }))
     },
-    loadSubmissionInfo: function() {
+    loadSubmissionInfo: function(completion) {
       var xhr = new XMLHttpRequest();
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
           console.log(xhr.response)
           this.submission = JSON.parse(xhr.responseText)
+          if (completion) {
+            completion()
+          }
         }
         else if(xhr.status == 401) {
           this.$emit('unauthorizedResponse')
