@@ -93,7 +93,7 @@
 
         <br />
 
-        <button 
+        <!-- <button 
           class="nav-item" 
           @click="state = 'submit'"
           v-if="user.type == 'teamCaptain' && submission == null"
@@ -103,7 +103,7 @@
           class="nav-item" 
           @click="state = 'update-submission'"
           v-if="user.type == 'teamCaptain' && submission != null"
-          >🔼 Update your Submission</button>
+          >🔼 Update your Submission</button> -->
       </div>
     </div>
 
@@ -151,7 +151,7 @@
         v-on:unauthorizedResponse="onUnauthedResponse" />
     </div>
 
-    <div v-if="state == 'submit'">
+    <!-- <div v-if="state == 'submit'">
       <Submit 
         v-bind:accessToken="accessToken"
         v-on:newSubmissionCreated="newSubmissionCreated"
@@ -165,7 +165,7 @@
         v-on:submissionNeedsReload="loadSubmissionInfo"
         v-on:editComplete="editComplete"
         v-on:unauthorizedResponse="onUnauthedResponse" />
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -173,16 +173,16 @@
 <script>
 import EditTeamName from './EditTeamName.vue'
 import ChangeTeam from './ChangeTeam.vue'
-import Submit from './Submit.vue'
-import UpdateSubmission from './UpdateSubmission.vue'
+// import Submit from './Submit.vue'
+// import UpdateSubmission from './UpdateSubmission.vue'
 
 export default {
   name: 'Me',
   components: {
     EditTeamName,
     ChangeTeam,
-    Submit,
-    UpdateSubmission
+    // Submit,
+    // UpdateSubmission
   },
   props: ['accessToken'],
   data: () => {
