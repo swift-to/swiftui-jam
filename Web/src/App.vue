@@ -22,6 +22,14 @@
          <a href="/">Home</a>
       </div>
 
+      <div v-if="currentView == 'gallery'">
+         <Gallery />
+      </div>
+
+      <div v-if="currentView == 'gallery-item'">
+         <GalleryItem v-bind:routingParameters="routingParameters" />
+      </div>
+
       <div v-if="currentView == 'me'">
          <Me 
            v-bind:accessToken="accessToken"
@@ -38,18 +46,23 @@
 import Register from './components/Register.vue'
 import Me from './components/Me.vue'
 import Login from './components/Login.vue'
+import Gallery from './components/Gallery.vue'
+import GalleryItem from './components/GalleryItem.vue'
 
 export default {
   name: 'App',
   components: {
     Register,
     Me,
-    Login
+    Login,
+    Gallery,
+    GalleryItem
   },
   data: () => {
     return {
         currentView: 'home',
-        validRoutes: ['register', 'confirmation', 'login', 'me'],
+        validRoutes: ['register', 'confirmation', 'login', 'me', 'gallery', 'gallery-item'],
+        routingParameters: [],
         accessToken: null
     }
   },
@@ -82,10 +95,13 @@ export default {
         return result;
     },
     evaluteHash: function(shouldReloadIfNotFound) {
-      let route = window.location.hash.replace("#", "")
-      if (this.validRoutes.indexOf(route) !== -1) {
-        this.navigateTo(route)
-      } else if (route == "" && shouldReloadIfNotFound) {
+      let routeComponents = window.location.hash.replace("#", "").split("/")
+      if (this.validRoutes.indexOf(routeComponents[0]) !== -1) {
+        if(routeComponents.length > 1) {
+          this.routingParameters = routeComponents.slice(1)
+        }
+        this.navigateTo(routeComponents[0])
+      } else if (routeComponents[0] == "" && shouldReloadIfNotFound) {
           window.location.reload()
       }
     },
