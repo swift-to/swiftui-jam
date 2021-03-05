@@ -17,7 +17,7 @@ final class SubmissionImageTests: XCTestCase {
     func uploadFile(
         to url: URL,
         data: Data,
-        md5String: String,
+//        md5String: String,
         eventLoop: EventLoopGroup
     ) -> EventLoopFuture<Void> {
         let promise = eventLoop.next().makePromise(of: Void.self)
@@ -27,14 +27,19 @@ final class SubmissionImageTests: XCTestCase {
         urlRequest.httpBody = data
         urlRequest.allHTTPHeaderFields = [
             "Content-Length": String(data.count),
-            "Content-MD5": md5String,
+//            "Content-MD5": md5String,
             "Content-Type": "image/jpeg"
         ]
         URLSession(configuration: .default)
             .dataTask(with: urlRequest) { (data, res, err) in
                 if err != nil || ((res as? HTTPURLResponse)?.statusCode ?? 400) >= 400 {
-                    print("err?", err as Any)
-                    XCTFail()
+                    print(
+                        "error!",
+                        (res as? HTTPURLResponse)?.statusCode as Any,
+                        err as Any,
+                        String(data: data ?? Data(), encoding: .utf8)
+                    )
+                    promise.completeWith(.failure(Abort(HTTPResponseStatus.init(statusCode: (res as? HTTPURLResponse)?.statusCode ?? 400))))
                 } else {
                     promise.completeWith(.success(()))
                 }
@@ -129,7 +134,7 @@ final class SubmissionImageTests: XCTestCase {
         try uploadFile(
             to: prepResponse.uploadUrl,
             data: testFile,
-            md5String: md5String,
+//            md5String: md5String,
             eventLoop: app.eventLoopGroup
         ).wait()
         

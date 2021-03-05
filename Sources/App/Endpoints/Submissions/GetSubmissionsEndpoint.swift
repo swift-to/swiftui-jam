@@ -20,6 +20,7 @@ struct GetSubmissionsEndpoint: APIRoutingEndpoint {
                 $0.with(\.$members)
             }
             .with(\.$images)
+            .filter(\.$isHidden == false)
             .all()
             .flatMapThrowing { try $0.map(SubmissionViewModel.init) }
     }

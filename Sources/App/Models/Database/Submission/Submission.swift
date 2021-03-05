@@ -16,8 +16,14 @@ final class Submission: Model {
     @Field(key: "description")
     var description: String
     
+    @Field(key: "isHidden")
+    var isHidden: Bool
+    
     @OptionalField(key: "repoUrl")
     var repoUrl: String?
+    
+    @OptionalField(key: "latestRepoUrl")
+    var latestRepoUrl: String?
     
     @OptionalField(key: "downloadUrl")
     var downloadUrl: String?
@@ -35,7 +41,7 @@ final class Submission: Model {
     var images: [SubmissionImage]
     
     init() {
-       
+       isHidden = false
     }
     
     static func deepFindById(_ id: UUID, on db: Database) -> EventLoopFuture<Submission> {
@@ -56,6 +62,7 @@ struct SubmissionViewModel: Equatable, Codable, Content {
     var name: String
     var description: String
     var repoUrl: String?
+    var latestRepoUrl: String?
     var downloadUrl: String?
     var blogUrl: String?
     var tags: String?
@@ -74,6 +81,7 @@ extension SubmissionViewModel {
             name: submission.name,
             description: submission.description,
             repoUrl: submission.repoUrl,
+            latestRepoUrl: submission.latestRepoUrl,
             downloadUrl: submission.downloadUrl,
             blogUrl: submission.blogUrl,
             tags: submission.tags,

@@ -93,6 +93,7 @@ final class SubmissionTests: XCTestCase {
             name: "mysub",
             description: "asub",
             repoUrl: "abc123",
+            latestRepoUrl: nil,
             downloadUrl: "321cba",
             blogUrl: "blogabba",
             tags: "1,2,3",
@@ -162,6 +163,7 @@ final class SubmissionTests: XCTestCase {
                 name: "thes ub",
                 description: "blashsh",
                 repoUrl: "repostuff",
+                latestRepoUrl: "4565",
                 downloadUrl: "downloado",
                 blogUrl: "blag",
                 tags: "3,2,1",
@@ -179,6 +181,7 @@ final class SubmissionTests: XCTestCase {
             name: "thes ub",
             description: "blashsh",
             repoUrl: "repostuff",
+            latestRepoUrl: "4565",
             downloadUrl: "downloado",
             blogUrl: "blag",
             tags: "3,2,1",
@@ -187,5 +190,52 @@ final class SubmissionTests: XCTestCase {
             images: []
         ))
     }
+    
+    func testGetSubmissions_withHiddenSubmission() throws {
+        // Given
+        let team = try Team.query(on: app.db)
+            .with(\.$captain)
+            .with(\.$members)
+            .filter(\.$name == "team1")
+            .first().unwrap(or: Abort(.notFound)).wait()
+        
+        let submissionResponse = try CreateSubmissionEndpoint.run(
+            context: authedContext,
+            parameters: (),
+            query: (),
+            body: .init(
+                name: "mysub",
+                description: "asub",
+                repoUrl: "abc123",
+                downloadUrl: "321cba"
+            )
+        ).wait()
+        
+        let initialResults = try GetSubmissionsEndpoint.run(
+            context: unauthedContext,
+            parameters: (),
+            query: (),
+            body: ()
+        ).wait()
+        
+        // When
+        
+        let sub = try Submission.deepFindById(submissionResponse.id, on: app.db).wait()
+        sub.isHidden = true
+        try sub.save(on: app.db).wait()
+        
+        let postHidingResults = try GetSubmissionsEndpoint.run(
+            context: unauthedContext,
+            parameters: (),
+            query: (),
+            body: ()
+        ).wait()
+        
+        // Expect
+        
+        XCTAssertEqual(initialResults.count, 1)
+        XCTAssertEqual(postHidingResults.count, 0)
+    }
+    
     
 }

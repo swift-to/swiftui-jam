@@ -10,6 +10,7 @@ struct UpdateSubmissionBody: Decodable {
     var name: String?
     var description: String?
     var repoUrl: String?
+    var latestRepoUrl: String?
     var downloadUrl: String?
     var blogUrl: String?
     var tags: String?
@@ -55,6 +56,7 @@ struct UpdateSubmissionEndpoint: APIRoutingEndpoint {
                         submission.name = body.name ?? submission.name
                         submission.description = body.description ?? submission.description
                         submission.repoUrl = body.repoUrl ?? submission.repoUrl
+                        submission.latestRepoUrl = body.latestRepoUrl ?? submission.latestRepoUrl
                         submission.downloadUrl = body.downloadUrl ?? submission.downloadUrl
                         submission.blogUrl = body.blogUrl ?? submission.blogUrl
                         submission.tags = body.tags ?? submission.tags
