@@ -40,6 +40,9 @@ final class Submission: Model {
     @Children(for: \.$submission)
     var images: [SubmissionImage]
     
+    @OptionalParent(key: "coverImageId")
+    var coverImage: SubmissionImage?
+    
     init() {
        isHidden = false
     }
@@ -70,6 +73,7 @@ struct SubmissionViewModel: Equatable, Codable, Content {
     
     var team: TeamDetailsViewModel
     var images: [SubmissionImageViewModel]
+    var coverImageId: UUID?
 }
 
 extension SubmissionViewModel {
@@ -89,7 +93,8 @@ extension SubmissionViewModel {
             team: TeamDetailsViewModel(submission.team),
             images: submission.images
                 .filter { !$0.isPending }
-                .map { try SubmissionImageViewModel($0) }
+                .map { try SubmissionImageViewModel($0) },
+            coverImageId: submission.$coverImage.id
         )
         
         self = vm

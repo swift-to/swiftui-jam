@@ -320,3 +320,28 @@ textarea {
     cursor: pointer;
   }
 }
+
+.award-content {
+  clear: both;
+  padding: 20px 0;
+  overflow: hidden;
+}
+
+.award-content img.preview {
+  float: left;
+  margin-right: 20px;
+  width: 200px;
+}
+
+.award-content h3 {
+  padding: 0;
+  margin: 0;
+}
+
+.awards-blog > h2, .awards-blog > h3 {
+  clear: both;
+}
+
+.awards-blog a {
+  font-size: 20px;
+}

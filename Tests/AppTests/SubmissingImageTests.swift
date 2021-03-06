@@ -166,7 +166,19 @@ final class SubmissionImageTests: XCTestCase {
         
         let res2 = try app.client.get(.init(string: imageUrl)).wait()
         XCTAssertEqual(res2.status, .ok)
-                
+        
+        let coverRes = try SetCoverSubmissionImageEndpoint.run(
+            context: authedContext,
+            parameters: .init(
+                itemId: submission.id.uuidString,
+                imageId: prepResponse.id.uuidString
+            ),
+            query: (),
+            body: ()
+        ).wait()
+        
+        XCTAssertEqual(coverRes, .ok)
+        
         let submissionResponse = try GetSubmissionByIdEndpoint.run(
             context: unauthedContext,
             parameters: .init(id: submission.id.uuidString),
@@ -175,6 +187,7 @@ final class SubmissionImageTests: XCTestCase {
         ).wait()
         
         XCTAssertEqual(submissionResponse.images.count, 1)
+        XCTAssertEqual(submissionResponse.coverImageId, prepResponse.id)
         
         let deleteResponse = try DeleteSubmissionImageEndpoint.run(
             context: authedContext,
@@ -199,6 +212,7 @@ final class SubmissionImageTests: XCTestCase {
         ).wait()
         
         XCTAssertEqual(submissionAfterImageDeleteResponse.images.count, 0)
+        XCTAssertEqual(submissionAfterImageDeleteResponse.coverImageId, nil)
         
     }
     

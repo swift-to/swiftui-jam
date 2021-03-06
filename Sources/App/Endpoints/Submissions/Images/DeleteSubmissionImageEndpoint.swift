@@ -30,8 +30,18 @@ struct DeleteSubmissionImageEndpoint: APIRoutingEndpoint {
                 .filter(\.$id == imageId)
                 .filter(\.$submission.$id == itemId)
             }
+            .with(\.$submission)
             .first()
             .unwrap(or: Abort(.notFound))
+            .flatMap { submissionImage -> EventLoopFuture<SubmissionImage> in
+                if submissionImage.submission.$coverImage.id == submissionImage.id {
+                    submissionImage.submission.$coverImage.id = nil
+                    return submissionImage.submission
+                        .save(on: context.db)
+                        .map { submissionImage }
+                }
+                return context.eventLoop.makeSucceededFuture(submissionImage)
+            }
             .flatMap { submissionImage -> EventLoopFuture<Void> in
                 return deleteImage(
                     fullUrl: submissionImage.url,
