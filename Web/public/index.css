@@ -321,6 +321,14 @@ textarea {
   }
 }
 
+.awards-blog {
+  font-size: 115%;
+}
+
+.awards-blog > h2, .awards-blog > h3 {
+  clear: both;
+}
+
 .award-content {
   clear: both;
   padding: 20px 0;
@@ -352,10 +360,6 @@ textarea {
 .award-content h3 {
   padding: 10px 0 0 0;
   margin: 0;
-}
-
-.awards-blog > h2, .awards-blog > h3 {
-  clear: both;
 }
 
 .award-content a, a.gallery {
