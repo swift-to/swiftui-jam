@@ -73,7 +73,7 @@ button.nav-item.logout {
   background-color: crimson;
 }
 
-div#intro {
+div#intro, section#intro-sponsor {
   position: relative;
   font-size: 15pt;
   line-height: 170%;
@@ -327,14 +327,30 @@ textarea {
   overflow: hidden;
 }
 
+.award-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+} 
+
 .award-content img.preview {
   float: left;
   margin-right: 20px;
   width: 200px;
 }
 
+@media screen and (max-width: 600px) {
+  .award-content {
+    flex-direction: column;
+  }  
+  .award-content img.preview {
+    width: 160px;
+    margin: 0 auto;
+  }
+}
+
 .award-content h3 {
-  padding: 0;
+  padding: 10px 0 0 0;
   margin: 0;
 }
 
@@ -342,6 +358,6 @@ textarea {
   clear: both;
 }
 
-.awards-blog a {
+.award-content a, a.gallery {
   font-size: 20px;
 }
