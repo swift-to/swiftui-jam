@@ -1,6 +1,11 @@
 <template>
   <div class="gallery">
-     <h3>Gallery</h3>
+     <h2>Gallery</h2>
+     <div>
+        <h3>App submissions from February 2021 SwiftUI Jam.</h3>
+        <a class="nav-item gallery" href="/awards-2021.html">🏆 Awards Blog</a>
+     </div>
+     <br />
      <div v-if="selectedSubmission == null" class="gallery-container">
       <h4 v-if="submissions.length == 0">Loading Submissions...</h4>
       <div class="gallery-item"
