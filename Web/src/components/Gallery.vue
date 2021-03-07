@@ -7,7 +7,7 @@
        v-for="submission in submissions" 
        v-bind:key="submission.id"
        @click="selectSubmission(submission)">
-        <img v-if="submission.images.length > 0" class="preview-image" v-bind:src="submission.images[0].url" />
+        <img v-if="getSubmissionCoverImage(submission) != null" class="preview-image" v-bind:src="getSubmissionCoverImage(submission)" />
         <div class="text-info">
           <h4 class="submission-name">{{submission.name}}</h4>
           <h5 class="submission-team">By {{submission.team.name}}</h5>
@@ -30,6 +30,20 @@ export default {
   },
   computed: {},
   methods: {
+    getSubmissionCoverImage: function (submission) {
+      if (submission.images.length == 0) { 
+        return null 
+      } else if (submission.coverImageId != null) {
+        let img = submission.images.find((img) => { return img.id == submission.coverImageId })
+        if (img != null) {
+          return img.url
+        } else {
+          return submission.images[0].url  
+        }
+      } else {
+        return submission.images[0].url 
+      }
+    },
     loadSubmissions: function() {
       var xhr = new XMLHttpRequest();
       xhr.onload = () => {

@@ -34,6 +34,7 @@ func routes(_ app: Application) throws {
         PrepareSubmissionImageUploadEndpoint.register(in: $0)
         ConfirmSubmissionImageUploadEndpoint.register(in: $0)
         DeleteSubmissionImageEndpoint.register(in: $0)
+        SetCoverSubmissionImageEndpoint.register(in: $0)
     }
     
     app.get("docs", "json") { (request) -> JSONString in

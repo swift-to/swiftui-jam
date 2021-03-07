@@ -9,8 +9,11 @@
          <label for="description">Description*</label>
          <textarea name="description" id="description" v-model="submissionForm.description"></textarea>
 
-         <label for="repoUrl">Git Repo Url</label>
+         <label for="repoUrl">Jam Code Git Repo Url</label>
          <input type="text" name="repoUrl" id="repoUrl" v-model="submissionForm.repoUrl">
+
+         <label for="latestRepoUrl">Latest Git Repo Url</label>
+         <input type="text" name="latestRepoUrl" id="latestRepoUrl" v-model="submissionForm.latestRepoUrl">
 
          <label for="downloadUrl">Download Url</label>
          <input type="text" name="downloadUrl" id="downloadUrl" v-model="submissionForm.downloadUrl">
@@ -41,6 +44,8 @@
         <div class="image-container" v-for="image in submission.images" v-bind:key="image.id">
           <img class="preview-image" v-bind:src="image.url" />
           <button class="delete" @click="deleteImage(image.id)">❌</button>
+          <button v-if="submission.coverImageId != image.id" class="set-cover" @click="setCoverImage(image.id)">Set Cover Image</button>
+          <strong class="cover-image-indicator" v-if="submission.coverImageId == image.id">Cover Image</strong>
         </div>
     </div>
     <button class="nav-item save" type="submit" @click="submit()">Save</button>
@@ -62,6 +67,7 @@ export default {
         name: "",
         description: "",
         repoUrl: "",
+        latestRepoUrl: "",
         downloadUrl: "",
         blogUrl: "",
         tags: "",
@@ -75,6 +81,7 @@ export default {
         name: this.submission.name,
         description: this.submission.description,
         repoUrl: this.submission.repoUrl,
+        latestRepoUrl: this.submission.latestRepoUrl,
         downloadUrl: this.submission.downloadUrl,
         blogUrl: this.submission.blogUrl,
         tags: this.submission.tags,
@@ -139,11 +146,32 @@ export default {
         name: this.submissionForm.name,
         description: this.submissionForm.description,
         repoUrl: this.submissionForm.repoUrl,
+        latestRepoUrl: this.submissionForm.latestRepoUrl,
         downloadUrl: this.submissionForm.downloadUrl,
         blogUrl: this.submissionForm.blogUrl,
         tags: this.submissionForm.tags,
         credits: this.submissionForm.credits
       }))
+    },
+    setCoverImage: function (imageId) {
+        var xhr = new XMLHttpRequest();
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          console.log(xhr.response)
+          this.$emit('submissionNeedsReload')
+        } 
+        else if(xhr.status == 401) {
+          this.$emit('unauthorizedResponse')
+        }
+        else {
+          alert(xhr.responseText)
+        }
+      }
+
+      xhr.open('PUT', `${process.env.VUE_APP_BASE_API_URL}/api/submissions/${this.submission.id}/images/${imageId}/set-cover`)
+      xhr.setRequestHeader("Content-Type", "application/json")
+      xhr.setRequestHeader("Authorization", `Bearer ${this.accessToken}`)
+      xhr.send()
     },
     deleteImage: function(imageId) {
       var xhr = new XMLHttpRequest();
@@ -211,6 +239,17 @@ button.delete {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+button.set-cover, .cover-image-indicator {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.cover-image-indicator {
+  padding: 2px;
+  background-color: cornflowerblue;
 }
 
 button.save {

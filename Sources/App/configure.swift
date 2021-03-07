@@ -88,6 +88,7 @@ public func addMigrations(_ app: Application) {
     
     // Submission adjustments
     app.migrations.add(UpdateSubmissionColumnsMigration())
+    app.migrations.add(AddSubmissionHiddenAndLatestUrlAndFeaturedImageColumnsMigration())
     
 }
 
