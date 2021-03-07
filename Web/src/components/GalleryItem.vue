@@ -27,6 +27,10 @@
           v-bind:href="submission.repoUrl">🌎 Visit Git Repo</a>
         <a 
           target = "_blank"
+          v-if="submission.repoUrl != nil" 
+          v-bind:href="submission.latestRepoUrl">🌎 Visit Latest Git Repo</a>
+        <a 
+          target = "_blank"
           v-if="submission.blogUrl != nil" 
           v-bind:href="submission.blogUrl">🌎 Visit Blog</a>
         <a 

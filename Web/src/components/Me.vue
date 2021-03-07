@@ -48,8 +48,10 @@
             <dd>{{submission.name}}</dd>
             <dt>Description</dt>
             <dd>{{submission.description}}</dd>
-            <dt>Git Repo URL</dt>
+            <dt>Jam Code Git Repo URL</dt>
             <dd>{{submission.repoUrl}}</dd>
+            <dt>Lastest Git Repo URL</dt>
+            <dd>{{submission.latestRepoUrl}}</dd>
             <dt>Download URL</dt>
             <dd>{{submission.downloadUrl}}</dd>
             <dt>Blog URL</dt>
@@ -73,7 +75,7 @@
         
         <br />
 
-        <button 
+        <!-- <button 
           class="nav-item" 
           @click="state = 'edit-team-name'"
           v-if="user.type == 'teamCaptain'"
@@ -83,7 +85,7 @@
           class="nav-item" 
           @click="state = 'change-team'"
           v-if="user.type != 'teamCaptain'"
-          >👥 Change Team</button>
+          >👥 Change Team</button> -->
 
         <br />
       
@@ -97,13 +99,13 @@
           class="nav-item" 
           @click="state = 'submit'"
           v-if="user.type == 'teamCaptain' && submission == null"
-          >⏫ Submit your App</button>
+          >⏫ Submit your App</button> -->
 
         <button 
           class="nav-item" 
           @click="state = 'update-submission'"
           v-if="user.type == 'teamCaptain' && submission != null"
-          >🔼 Update your Submission</button> -->
+          >🔼 Update your Submission</button>
       </div>
     </div>
 
@@ -135,28 +137,28 @@
       <button class="nav-item" type="submit" @click="updatePersonalInfo()">Submit</button>
     </div>
 
-    <div v-if="state == 'edit-team-name'">
+    <!-- <div v-if="state == 'edit-team-name'">
       <EditTeamName 
         v-bind:user="user" 
         v-bind:accessToken="accessToken"
         v-on:editComplete="editComplete"
         v-on:unauthorizedResponse="onUnauthedResponse" />
-    </div>
+    </div> -->
 
-    <div v-if="state == 'change-team'">
+    <!-- <div v-if="state == 'change-team'">
       <ChangeTeam 
         v-bind:user="user" 
         v-bind:accessToken="accessToken"
         v-on:editComplete="editComplete"
         v-on:unauthorizedResponse="onUnauthedResponse" />
-    </div>
+    </div> -->
 
     <!-- <div v-if="state == 'submit'">
       <Submit 
         v-bind:accessToken="accessToken"
         v-on:newSubmissionCreated="newSubmissionCreated"
         v-on:unauthorizedResponse="onUnauthedResponse" />
-    </div>
+    </div> -->
 
     <div v-if="state == 'update-submission'">
       <UpdateSubmission 
@@ -165,24 +167,24 @@
         v-on:submissionNeedsReload="loadSubmissionInfo"
         v-on:editComplete="editComplete"
         v-on:unauthorizedResponse="onUnauthedResponse" />
-    </div> -->
+    </div>
 
   </div>
 </template>
 
 <script>
-import EditTeamName from './EditTeamName.vue'
-import ChangeTeam from './ChangeTeam.vue'
+// import EditTeamName from './EditTeamName.vue'
+// import ChangeTeam from './ChangeTeam.vue'
 // import Submit from './Submit.vue'
-// import UpdateSubmission from './UpdateSubmission.vue'
+import UpdateSubmission from './UpdateSubmission.vue'
 
 export default {
   name: 'Me',
   components: {
-    EditTeamName,
-    ChangeTeam,
+    // EditTeamName,
+    // ChangeTeam,
     // Submit,
-    // UpdateSubmission
+    UpdateSubmission
   },
   props: ['accessToken'],
   data: () => {
