@@ -2,11 +2,17 @@
   <div class="gallery">
      <h2>Gallery</h2>
      <div>
-        <h3>App submissions from February 2021 SwiftUI Jam.</h3>
+        <h3>App submissions from February 2021 SwiftUI Jam. Over a 54 hour period, these brave developers put their hearts into creating SwiftUI apps and sharing the source code.</h3>
         <a class="nav-item gallery" href="/awards-2021.html">🏆 Awards Blog</a>
      </div>
      <br />
-     <div v-if="selectedSubmission == null" class="gallery-container">
+     <div class="sort">
+       <span>Sort by: </span>
+       <button @click="sortAlpha()">Alphabetical</button>
+       <button @click="sortAwards()">Awards</button>
+       <button @click="sortBlogs()">Blogs</button>
+     </div>
+     <div class="gallery-container">
       <h4 v-if="submissions.length == 0">Loading Submissions...</h4>
       <div class="gallery-item"
        v-for="submission in submissions" 
@@ -64,7 +70,19 @@ export default {
     },
     selectSubmission: function(submission) {
       window.location.hash = `#gallery-item/${submission.id}`
-    }
+    },
+    sortAlpha: function() {
+      console.log("sort alpha")
+      this.submissions = this.submissions.sort((a, b) => { return a.name > b.name })
+    },
+    sortAwards: function() {
+      console.log("sort awards")
+      this.submissions = this.submissions.sort((a) => { return !a.isAwardWinner })
+    },
+    sortBlogs: function() {
+      console.log("sort blogs")
+      this.submissions = this.submissions.sort((a) => { return !(a.blogUrl != null) })
+    }, 
   }
 }
 </script>
@@ -122,6 +140,19 @@ h5.submission-team {
   width: 250px;
   object-fit: contain;
   margin: 0 10px;
+}
+
+.sort button {
+  background: none;
+  border: none;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 16px;
+  color: #008AC8;
+  cursor: pointer;
+}
+.sort button:hover {
+  color: coral;
 }
 
 </style>
