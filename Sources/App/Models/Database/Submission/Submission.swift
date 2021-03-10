@@ -19,6 +19,9 @@ final class Submission: Model {
     @Field(key: "isHidden")
     var isHidden: Bool
     
+    @Field(key: "isAwardWinner")
+    var isAwardWinner: Bool
+    
     @OptionalField(key: "repoUrl")
     var repoUrl: String?
     
@@ -42,6 +45,8 @@ final class Submission: Model {
     
     @OptionalParent(key: "coverImageId")
     var coverImage: SubmissionImage?
+    
+    
     
     init() {
        isHidden = false
@@ -70,6 +75,7 @@ struct SubmissionViewModel: Equatable, Codable, Content {
     var blogUrl: String?
     var tags: String?
     var credits: String?
+    var isAwardWinner: Bool
     
     var team: TeamDetailsViewModel
     var images: [SubmissionImageViewModel]
@@ -79,8 +85,7 @@ struct SubmissionViewModel: Equatable, Codable, Content {
 extension SubmissionViewModel {
     
     init(_ submission: Submission) throws {
-        
-        let vm = try SubmissionViewModel(
+        self = try .init(
             id: submission.requireID(),
             name: submission.name,
             description: submission.description,
@@ -90,14 +95,13 @@ extension SubmissionViewModel {
             blogUrl: submission.blogUrl,
             tags: submission.tags,
             credits: submission.credits,
+            isAwardWinner: submission.isAwardWinner,
             team: TeamDetailsViewModel(submission.team),
             images: submission.images
                 .filter { !$0.isPending }
                 .map { try SubmissionImageViewModel($0) },
             coverImageId: submission.$coverImage.id
         )
-        
-        self = vm
     }
     
 }

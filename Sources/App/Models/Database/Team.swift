@@ -16,6 +16,9 @@ final class Team: Model {
     @Siblings(through: UserTeam.self, from: \.$team, to: \.$user)
     var members: [User]
     
+    @Children(for: \.$team)
+    var submissions: [Submission]
+    
     @Field(key: "requiresFloater")
     var requiresFloater: Bool
     

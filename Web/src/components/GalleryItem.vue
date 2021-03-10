@@ -3,7 +3,7 @@
      <div v-if="submission != null" class="selected-submission">
       <h3 class="nav-item" @click="showGallery()">&lt; Back to Gallery</h3>
       <div class="text-info">
-        <h4 class="submission-name">{{submission.name}}</h4>
+        <h4 class="submission-name">{{submission.name}}<span v-if="submission.isAwardWinner">&nbsp;🏆</span></h4>
         <h5 class="submission-team">By {{submission.team.name}}</h5>
         <p class="submission-team-members">
           <strong>Team Members:</strong>&nbsp;

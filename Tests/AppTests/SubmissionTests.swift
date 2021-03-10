@@ -98,6 +98,7 @@ final class SubmissionTests: XCTestCase {
             blogUrl: "blogabba",
             tags: "1,2,3",
             credits: "credited",
+            isAwardWinner: false,
             team: try TeamDetailsViewModel(team),
             images: []
         ))
@@ -186,6 +187,7 @@ final class SubmissionTests: XCTestCase {
             blogUrl: "blag",
             tags: "3,2,1",
             credits: "acred",
+            isAwardWinner: false,
             team: try TeamDetailsViewModel(team),
             images: []
         ))
@@ -193,12 +195,6 @@ final class SubmissionTests: XCTestCase {
     
     func testGetSubmissions_withHiddenSubmission() throws {
         // Given
-        let team = try Team.query(on: app.db)
-            .with(\.$captain)
-            .with(\.$members)
-            .filter(\.$name == "team1")
-            .first().unwrap(or: Abort(.notFound)).wait()
-        
         let submissionResponse = try CreateSubmissionEndpoint.run(
             context: authedContext,
             parameters: (),
@@ -219,7 +215,6 @@ final class SubmissionTests: XCTestCase {
         ).wait()
         
         // When
-        
         let sub = try Submission.deepFindById(submissionResponse.id, on: app.db).wait()
         sub.isHidden = true
         try sub.save(on: app.db).wait()
@@ -232,7 +227,6 @@ final class SubmissionTests: XCTestCase {
         ).wait()
         
         // Expect
-        
         XCTAssertEqual(initialResults.count, 1)
         XCTAssertEqual(postHidingResults.count, 0)
     }

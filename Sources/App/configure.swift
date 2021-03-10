@@ -89,9 +89,12 @@ public func addMigrations(_ app: Application) {
     // Submission adjustments
     app.migrations.add(UpdateSubmissionColumnsMigration())
     app.migrations.add(AddSubmissionHiddenAndLatestUrlAndFeaturedImageColumnsMigration())
+    app.migrations.add(AddSubmissionAwardColumnMigration())
     
 }
 
 public func addCommands(_ app: Application) {
     app.commands.use(SendRegistrationConfirmationBulkCommand(), as: "send-registration-email-bulk", isDefault: false)
+    app.commands.use(GenerateStickerSendoutReportCommand(), as: "generate-sticker-report", isDefault: false)
+    
 }

@@ -14,7 +14,7 @@
        @click="selectSubmission(submission)">
         <img v-if="getSubmissionCoverImage(submission) != null" class="preview-image" v-bind:src="getSubmissionCoverImage(submission)" />
         <div class="text-info">
-          <h4 class="submission-name">{{submission.name}}</h4>
+          <h4 class="submission-name">{{submission.name}}<span v-if="submission.isAwardWinner">&nbsp;🏆</span></h4>
           <h5 class="submission-team">By {{submission.team.name}}</h5>
         </div>
       </div>
