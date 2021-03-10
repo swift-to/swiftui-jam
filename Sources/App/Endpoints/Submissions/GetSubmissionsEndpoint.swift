@@ -21,6 +21,12 @@ struct GetSubmissionsEndpoint: APIRoutingEndpoint {
             }
             .with(\.$images)
             .filter(\.$isHidden == false)
+            .group(.or) {
+                $0.filter(\.$blogUrl != nil)
+                $0.filter(\.$downloadUrl != nil)
+                $0.filter(\.$repoUrl != nil)
+                $0.filter(\.$latestRepoUrl != nil)
+            }
             .sort(\.$name, .ascending)
             .all()
             .flatMapThrowing { try $0.map(SubmissionViewModel.init) }
